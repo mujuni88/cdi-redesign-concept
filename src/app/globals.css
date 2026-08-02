@@ -21,8 +21,8 @@
 */
 
 @theme {
-  --color-ink: #06131a;
-  --color-ink-raised: #0d2028;
+  --color-ink: #040e14;
+  --color-ink-raised: #0a1a22;
   --color-ink-line: #1d3641;
   --color-ink-soft: #8aa4ad;
 
@@ -45,10 +45,10 @@
   --font-body: var(--font-literata), Georgia, serif;
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
 
-  --text-hero: clamp(2.5rem, 6.6vw, 5.5rem);
-  --text-hero--line-height: 0.95;
+  --text-hero: clamp(2.9rem, 8.2vw, 7rem);
+  --text-hero--line-height: 0.92;
   --text-hero--letter-spacing: -0.034em;
-  --text-display: clamp(1.9rem, 4.2vw, 3.4rem);
+  --text-display: clamp(2.1rem, 5vw, 4.2rem);
   --text-display--line-height: 1.03;
   --text-display--letter-spacing: -0.026em;
   --text-title: clamp(1.35rem, 2.3vw, 1.95rem);

@@ -8,6 +8,8 @@
  * redesign proposal, not existing data.
  */
 
+import type { ArtVariant } from "./art";
+
 export type Level = "Foundational" | "Applied" | "Advanced";
 
 export type Guide = {
@@ -22,6 +24,7 @@ export type Guide = {
   /** Estimated by us from chapter length; CDI publishes no durations. */
   minutes: number;
   estimated: true;
+  art: ArtVariant;
   note?: string;
 };
 
@@ -69,6 +72,7 @@ export const DOMAINS: { name: Domain; blurb: string; state: "live" | "empty" }[]
 export const GUIDES: Guide[] = [
   {
     slug: "data-science",
+    art: "regression",
     title: "Data Science Foundations",
     subtitle: "A Reusable Python Workflow for Tidy Data Analysis and Interpretation",
     domain: "Data Science",
@@ -81,6 +85,7 @@ export const GUIDES: Guide[] = [
   },
   {
     slug: "python-viz",
+    art: "smallmultiples",
     title: "Data Visualization with Python",
     subtitle: "Foundational Principles for Professional Visualization in Python",
     domain: "Data Science",
@@ -93,6 +98,7 @@ export const GUIDES: Guide[] = [
   },
   {
     slug: "databases-sql",
+    art: "joins",
     title: "Databases & SQL",
     subtitle: "Building the Data Backbone for Analytical Workflows",
     domain: "Data Science",
@@ -105,6 +111,7 @@ export const GUIDES: Guide[] = [
   },
   {
     slug: "machine-learning",
+    art: "roc",
     title: "Machine Learning with Python",
     subtitle: "A Structured Workflow for Predictive Modeling",
     domain: "Data Science",
@@ -117,6 +124,7 @@ export const GUIDES: Guide[] = [
   },
   {
     slug: "rnaseq",
+    art: "volcano",
     title: "RNA-Seq System",
     subtitle: "From Raw Reads to Defensible Biological Claims",
     domain: "Omics & Bioinformatics",
@@ -129,6 +137,7 @@ export const GUIDES: Guide[] = [
   },
   {
     slug: "microbiome",
+    art: "pcoa",
     title: "Microbiome Analysis System",
     subtitle: "From Microbial Communities to Defensible Biological Insights",
     domain: "Omics & Bioinformatics",
@@ -141,6 +150,7 @@ export const GUIDES: Guide[] = [
   },
   {
     slug: "singlecell",
+    art: "umap",
     title: "Single-Cell Analysis",
     subtitle: "From Cellular Heterogeneity to Interpretable Biological Structure",
     domain: "Omics & Bioinformatics",
@@ -153,6 +163,7 @@ export const GUIDES: Guide[] = [
   },
   {
     slug: "gwas",
+    art: "manhattan",
     title: "GWAS Analysis",
     subtitle: "From Genotype QC to Interpreting Genetic Associations",
     domain: "Omics & Bioinformatics",
@@ -165,6 +176,7 @@ export const GUIDES: Guide[] = [
   },
   {
     slug: "proteomics",
+    art: "heatmap",
     title: "Proteomics Analysis",
     subtitle: "From Differential Protein Abundance Tables to Biological Interpretation",
     domain: "Omics & Bioinformatics",
@@ -177,6 +189,7 @@ export const GUIDES: Guide[] = [
   },
   {
     slug: "ngsdata",
+    art: "pipeline",
     title: "Data Acquisition System",
     subtitle: "From Public Omics Data Discovery to Reproducible Reference Datasets",
     domain: "Omics & Bioinformatics",
@@ -189,6 +202,7 @@ export const GUIDES: Guide[] = [
   },
   {
     slug: "clinical",
+    art: "timeline",
     title: "Clinical & Medical Data Systems",
     subtitle: "From Healthcare Records to Reliable Clinical Insights",
     domain: "Clinical & Medical Data",
@@ -202,6 +216,7 @@ export const GUIDES: Guide[] = [
   },
   {
     slug: "datasetdiscovery",
+    art: "funnel",
     title: "Systematic Dataset Discovery",
     subtitle: "From Research Questions to Eligible Public Omics Studies",
     domain: "Research & Innovation",
@@ -259,6 +274,7 @@ export type Row = {
 };
 
 export type CardItem = {
+  art: ArtVariant;
   title: string;
   subtitle: string;
   meta: string;
@@ -275,6 +291,7 @@ export type CardItem = {
 const guideCard = (slug: string, meta: string, extra: Partial<CardItem> = {}): CardItem => {
   const g = GUIDES.find((x) => x.slug === slug)!;
   return {
+    art: g.art,
     title: g.title,
     subtitle: g.subtitle,
     meta,
@@ -292,6 +309,7 @@ export const ROWS: Row[] = [
     reason: "Every analysis begins with the same three questions, whatever the field.",
     items: [
       {
+        art: "cleaning",
         title: "Data Cleaning and Preparation",
         subtitle: "Decide what to change, and be able to say why",
         meta: "Interactive lesson · DS-L03",
@@ -322,6 +340,7 @@ export const ROWS: Row[] = [
     reason: "Short, self-contained, and you finish with something you made.",
     items: [
       {
+        art: "cleaning",
         title: "Data Cleaning and Preparation",
         subtitle: "Decide what to change, and be able to say why",
         meta: "Interactive lesson · 9 sections",

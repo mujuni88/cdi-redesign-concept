@@ -1,9 +1,8 @@
 import { SiteHeader } from "@/components/site/SiteHeader";
-import { Hero } from "@/components/home/Hero";
-import { Outcomes } from "@/components/home/Outcomes";
+import { CinematicHero } from "@/components/home/CinematicHero";
+import { Marquee, Billboard, DomainGrid } from "@/components/home/Billboard";
+import { ArtRows } from "@/components/home/ArtRows";
 import { IdenticalRowsDemo } from "@/components/home/IdenticalRowsDemo";
-import { DiscoveryRows } from "@/components/home/DiscoveryRows";
-import { Applications, FeaturedLesson } from "@/components/home/Applications";
 import {
   HowItWorks,
   Instructor,
@@ -16,23 +15,23 @@ export default function HomePage() {
     <>
       <SiteHeader />
       <main id="main">
-        {/* 1 — hook: the argument, performed rather than asserted */}
-        <Hero />
-        {/* 2 — outcome, in the learner's voice */}
-        <Outcomes />
-        {/* 3 — interactive demonstration, before anything is asked for */}
+        {/* 1 — the hook: a volcano plot assembling itself */}
+        <CinematicHero />
+        {/* 2 — ambient strip of what's actually covered */}
+        <Marquee />
+        {/* 3 — Netflix rows, each card fronted by real generated chart art */}
+        <ArtRows />
+        {/* 4 — billboard for the featured lesson */}
+        <Billboard />
+        {/* 5 — play it right now, before anything is asked for */}
         <IdenticalRowsDemo />
-        {/* 4 — discovery */}
-        <DiscoveryRows />
-        {/* 5 — real-world applications */}
-        <Applications />
-        {/* 6 — featured lesson */}
-        <FeaturedLesson />
-        {/* 7 — how the learning experience works */}
+        {/* 6 — the domains, each with its own chart */}
+        <DomainGrid />
+        {/* 7 — how the learning model works */}
         <HowItWorks />
         {/* 8 — instructor credibility */}
         <Instructor />
-        {/* 9 + 10 — free starting point, and what costs money */}
+        {/* 9 + 10 — free tier, and what costs money */}
         <StartFree />
       </main>
       <SiteFooter />

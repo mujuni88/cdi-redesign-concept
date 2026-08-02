@@ -25,12 +25,12 @@ export function IdenticalRowsDemo() {
     >
       <div className="mx-auto grid max-w-350 gap-12 lg:grid-cols-[0.85fr_1fr] lg:gap-20">
         <div>
-          <p className="rule-label mb-5 text-signal">Try it now</p>
+          <p className="rule-label mb-5 text-signal">15-second demo</p>
           <h2
             id="demo-heading"
             className="text-display max-w-[16ch] text-balance text-ink"
           >
-            Same numbers. Same species. Delete one?
+            Your turn. Make the call.
           </h2>
           <p className="mt-6 max-w-[44ch] text-[1.0625rem] leading-relaxed text-paper-soft">
             These {group.length} rows appear in the Iris dataset — the most-used
