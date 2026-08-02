@@ -46,7 +46,10 @@ export function IdenticalRowsDemo() {
           </p>
         </div>
 
-        <div className="rounded-3xl border border-paper-line bg-paper-raised p-6 shadow-[0_14px_34px_rgba(2,24,33,0.07)] sm:p-8">
+        {/* min-w-0: grid items default to min-width:auto, which would let the
+            table's minimum width push the page wider instead of scrolling
+            inside its own container. */}
+        <div className="min-w-0 rounded-3xl border border-paper-line bg-paper-raised p-6 shadow-[0_14px_34px_rgba(2,24,33,0.07)] sm:p-8">
           <div className="overflow-x-auto">
             <table className="w-full min-w-100 border-collapse font-mono text-sm">
               <caption className="sr-only">

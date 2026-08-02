@@ -148,7 +148,7 @@ export function Hero() {
         {/* The live demonstration */}
         <div
           data-hero-panel
-          className="overflow-hidden rounded-3xl border border-ink-line bg-ink-raised shadow-[0_24px_60px_rgba(0,0,0,0.45)]"
+          className="min-w-0 overflow-hidden rounded-3xl border border-ink-line bg-ink-raised shadow-[0_24px_60px_rgba(0,0,0,0.45)]"
         >
           <div className="flex items-center justify-between border-b border-ink-line px-5 py-3">
             <code className="text-xs text-ink-soft">data/iris.csv</code>
