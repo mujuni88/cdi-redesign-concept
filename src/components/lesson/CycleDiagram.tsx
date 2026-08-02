@@ -79,8 +79,8 @@ export function CycleDiagram() {
               {String(i + 1).padStart(2, "0")}
             </span>
             <div>
-              <p className="text-[1.05rem] font-semibold text-ink">{step.verb}</p>
-              <p className="mt-1.5 text-[0.95rem] leading-relaxed text-paper-soft">
+              <p className="text-[1.05rem] font-semibold text-fg">{step.verb}</p>
+              <p className="mt-1.5 text-[0.95rem] leading-relaxed text-fg-muted">
                 {step.body}
               </p>
             </div>
@@ -94,7 +94,7 @@ export function CycleDiagram() {
     <div ref={scope as React.RefObject<HTMLDivElement>} className="relative">
       <div
         data-cycle-panel
-        className="flex min-h-[70vh] items-center rounded-3xl border border-paper-line bg-paper-raised p-7 sm:p-10"
+        className="flex min-h-[70vh] items-center rounded-3xl border border-line bg-bg-raised p-7 sm:p-10"
       >
         <div className="w-full">
           {/* The ring: five arcs, the active one lit. */}
@@ -110,7 +110,7 @@ export function CycleDiagram() {
                 />
                 <p
                   className={`rule-label mt-3 transition-colors duration-500 ${
-                    i === active ? "text-ink" : "text-paper-soft/50"
+                    i === active ? "text-fg" : "text-fg-muted/50"
                   }`}
                 >
                   {String(i + 1).padStart(2, "0")}
@@ -125,11 +125,11 @@ export function CycleDiagram() {
           >
             {STEPS[active].verb}
           </p>
-          <p className="mt-5 max-w-[46ch] text-[1.1rem] leading-relaxed text-paper-soft">
+          <p className="mt-5 max-w-[46ch] text-[1.1rem] leading-relaxed text-fg-muted">
             {STEPS[active].body}
           </p>
 
-          <p className="mt-9 font-mono text-[0.72rem] text-paper-soft/60">
+          <p className="mt-9 font-mono text-[0.75rem] text-fg-muted/60">
             {active === STEPS.length - 1
               ? "…and the loop starts again on the next issue."
               : "keep scrolling"}

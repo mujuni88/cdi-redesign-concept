@@ -2,15 +2,19 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { ThemeToggle } from "./ThemeToggle";
 
+// "Learn" previously pointed at #paths, an anchor that lived only in a
+// component the page stopped rendering — so the first nav item silently did
+// nothing. It now targets the section that actually exists.
 const NAV = [
-  { label: "Learn", href: "/#paths" },
+  { label: "Learn", href: "/#rows" },
   { label: "Practicals", href: "/#practicals" },
   { label: "Mentorship", href: "/#mentorship" },
   { label: "About", href: "/#about" },
 ];
 
-export function SiteHeader({ variant = "dark" }: { variant?: "dark" | "light" }) {
+export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -21,26 +25,19 @@ export function SiteHeader({ variant = "dark" }: { variant?: "dark" | "light" })
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const light = variant === "light";
-
   return (
     <header
       className={`sticky top-0 z-50 transition-colors duration-300 ${
         scrolled
-          ? light
-            ? "border-b border-paper-line bg-paper/90 backdrop-blur-md"
-            : "border-b border-ink-line bg-ink/90 backdrop-blur-md"
+          ? "border-b border-line bg-bg/90 backdrop-blur-md"
           : "border-b border-transparent"
       }`}
     >
-      <div className="mx-auto flex max-w-350 items-center gap-6 px-5 py-4 sm:px-8">
-        <Link
-          href="/"
-          className={`flex items-baseline gap-2.5 ${light ? "text-ink" : "text-paper"}`}
-        >
+      <div className="mx-auto flex max-w-350 items-center gap-4 px-5 py-4 sm:px-8">
+        <Link href="/" className="flex items-baseline gap-2.5 text-fg">
           <span
             aria-hidden
-            className="rule-label rounded-sm bg-signal px-1.5 py-1 text-paper"
+            className="rule-label rounded-sm bg-btn px-1.5 py-1 text-on-btn"
           >
             CDI
           </span>
@@ -54,51 +51,45 @@ export function SiteHeader({ variant = "dark" }: { variant?: "dark" | "light" })
             <Link
               key={item.label}
               href={item.href}
-              className={`rounded-full px-3.5 py-2 font-mono text-[0.78rem] tracking-wide transition-colors ${
-                light
-                  ? "text-paper-soft hover:bg-signal/8 hover:text-signal"
-                  : "text-ink-soft hover:bg-paper/8 hover:text-paper"
-              }`}
+              className="rounded-full px-3.5 py-2 font-mono text-[0.78rem] tracking-wide text-fg-muted transition-colors hover:bg-signal/10 hover:text-signal"
             >
               {item.label}
             </Link>
           ))}
+          <ThemeToggle className="ml-2" />
           <Link
             href="/lessons/data-cleaning"
-            className="ml-2 rounded-full bg-flag px-4 py-2 font-mono text-[0.78rem] font-medium text-ink transition-transform hover:scale-[1.03]"
+            className="ml-1 rounded-full bg-accent px-4 py-2 font-mono text-[0.78rem] font-medium text-on-accent transition-transform hover:scale-[1.03]"
           >
             Start free lesson
           </Link>
         </nav>
 
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          className={`ml-auto rounded-full border px-3.5 py-2 font-mono text-[0.78rem] md:hidden ${
-            light ? "border-paper-line text-ink" : "border-ink-line text-paper"
-          }`}
-        >
-          {open ? "Close" : "Menu"}
-        </button>
+        <div className="ml-auto flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            // Points at a panel that is always in the DOM, so the relationship
+            // resolves whether or not the menu is currently open.
+            aria-controls="mobile-nav"
+            className="rounded-full border border-line px-3.5 py-2 font-mono text-[0.78rem] text-fg"
+          >
+            {open ? "Close" : "Menu"}
+          </button>
+        </div>
       </div>
 
-      {open && (
-        <nav
-          id="mobile-nav"
-          aria-label="Main"
-          className={`md:hidden ${light ? "border-t border-paper-line bg-paper" : "border-t border-ink-line bg-ink"}`}
-        >
+      <div id="mobile-nav" hidden={!open} className="md:hidden">
+        <nav aria-label="Main" className="border-t border-line bg-bg">
           <ul className="px-5 py-3">
             {NAV.map((item) => (
               <li key={item.label}>
                 <Link
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className={`block border-b py-3.5 font-mono text-sm ${
-                    light ? "border-paper-line/60 text-ink" : "border-ink-line/60 text-paper"
-                  }`}
+                  className="block border-b border-line/60 py-3.5 font-mono text-sm text-fg"
                 >
                   {item.label}
                 </Link>
@@ -108,14 +99,14 @@ export function SiteHeader({ variant = "dark" }: { variant?: "dark" | "light" })
               <Link
                 href="/lessons/data-cleaning"
                 onClick={() => setOpen(false)}
-                className="block rounded-full bg-flag px-4 py-3 text-center font-mono text-sm text-ink"
+                className="block rounded-full bg-accent px-4 py-3 text-center font-mono text-sm text-on-accent"
               >
                 Start free lesson
               </Link>
             </li>
           </ul>
         </nav>
-      )}
+      </div>
     </header>
   );
 }

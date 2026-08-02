@@ -31,7 +31,7 @@ const POINTS = (() => {
     const u = Math.max(rand(), 1e-9);
     return q(Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * rand()));
   };
-  return Array.from({ length: 420 }, () => {
+  return Array.from({ length: 220 }, () => {
     const fc = normal() * 1.9;
     const p = Math.abs(normal()) * 1.7 + Math.abs(fc) * 1.6;
     const sig = p > 4 && Math.abs(fc) > 1.2;
@@ -77,19 +77,19 @@ export function CinematicHero() {
   return (
     <section
       ref={scope as React.RefObject<HTMLElement>}
-      className="relative flex min-h-[92svh] items-center overflow-hidden border-b border-ink-line"
+      className="relative flex min-h-[92svh] items-center overflow-hidden border-b border-line"
     >
       {/* The plot itself, full-bleed behind the type. */}
       <div aria-hidden className="absolute inset-0">
         <svg
           viewBox="0 0 400 260"
           preserveAspectRatio="xMidYMid slice"
-          className="h-full w-full opacity-[0.85]"
+          className="h-full w-full"
         >
           <defs>
             <radialGradient id="heroGlow" cx="50%" cy="45%" r="60%">
-              <stop offset="0%" stopColor="#036281" stopOpacity="0.5" />
-              <stop offset="100%" stopColor="#06131a" stopOpacity="0" />
+              <stop offset="0%" stopColor="var(--color-plot-glow)" />
+              <stop offset="100%" stopColor="transparent" />
             </radialGradient>
           </defs>
           <rect width="400" height="260" fill="url(#heroGlow)" />
@@ -100,9 +100,9 @@ export function CinematicHero() {
                 key={i}
                 cx={200 + p.fc * 26}
                 cy={246 - p.p * 17}
-                r={p.r}
-                fill="#385c6b"
-                opacity={0.5}
+                r={p.r + 0.25}
+                fill="var(--color-plot-noise)"
+                opacity={0.65}
               />
             ))}
           </g>
@@ -113,9 +113,9 @@ export function CinematicHero() {
                 key={i}
                 cx={200 + p.fc * 26}
                 cy={246 - p.p * 17}
-                r={p.r + 1.4}
-                fill={p.up ? "#f7c546" : "#21918c"}
-                opacity={0.95}
+                r={p.r + 1.6}
+                fill={p.up ? "var(--color-plot-up)" : "var(--color-plot-down)"}
+                opacity={1}
               />
             ))}
           </g>
@@ -125,11 +125,11 @@ export function CinematicHero() {
       {/* Legibility scrim — the type has to win over the plot. */}
       <div
         aria-hidden
-        className="absolute inset-0 bg-gradient-to-r from-ink via-ink/88 to-ink/10"
+        className="absolute inset-0 bg-linear-to-r from-bg from-22% via-bg/80 via-52% to-transparent"
       />
       <div
         aria-hidden
-        className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-ink to-transparent"
+        className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-bg to-transparent"
       />
 
       <div className="relative mx-auto w-full max-w-350 px-5 py-24 sm:px-8">
@@ -139,7 +139,7 @@ export function CinematicHero() {
             For scientists with data in hand
           </p>
 
-          <h1 className="text-hero text-balance text-paper">
+          <h1 className="text-hero text-balance text-fg">
             <span data-rise className="block">
               Turn complex data
             </span>
@@ -151,7 +151,7 @@ export function CinematicHero() {
               <span
                 data-cut
                 aria-hidden
-                className="absolute inset-x-0 bottom-[0.1em] z-0 h-[0.14em] origin-left bg-flag/35"
+                className="absolute inset-x-0 bottom-[0.055em] z-0 h-[0.055em] origin-left bg-accent"
               />
             </span>
             <span data-rise className="block">
@@ -161,7 +161,7 @@ export function CinematicHero() {
 
           <p
             data-rise
-            className="mt-9 max-w-[52ch] text-lg leading-relaxed text-paper/70 sm:text-xl"
+            className="mt-9 max-w-[52ch] text-lg leading-relaxed text-fg/70 sm:text-xl"
           >
             Most tutorials show you which function to call. They stop before the
             part that decides whether your work survives review.
@@ -170,13 +170,13 @@ export function CinematicHero() {
           <div data-rise className="mt-11 flex flex-wrap items-center gap-3">
             <Link
               href="/lessons/data-cleaning"
-              className="group relative overflow-hidden rounded-full bg-flag px-8 py-4 font-mono text-sm font-medium text-ink transition-transform hover:scale-[1.04]"
+              className="group relative overflow-hidden rounded-full bg-accent px-8 py-4 font-mono text-sm font-medium text-on-accent transition-transform hover:scale-[1.04]"
             >
               <span className="relative z-10">▶ Start the free lesson</span>
             </Link>
             <Link
               href="#rows"
-              className="rounded-full border border-paper/25 bg-ink/40 px-8 py-4 font-mono text-sm text-paper backdrop-blur-sm transition-colors hover:border-valid hover:text-valid"
+              className="rounded-full border border-fg/25 bg-bg/40 px-8 py-4 font-mono text-sm text-fg backdrop-blur-sm transition-colors hover:border-valid hover:text-valid"
             >
               Browse the library
             </Link>
@@ -190,10 +190,10 @@ export function CinematicHero() {
               ["$0", "to start"],
             ].map(([value, label]) => (
               <div key={String(label)}>
-                <dt className="font-display text-3xl font-semibold text-paper sm:text-4xl">
+                <dt className="font-display text-3xl font-semibold text-fg sm:text-4xl">
                   {value}
                 </dt>
-                <dd className="rule-label mt-1 text-ink-soft">{label}</dd>
+                <dd className="rule-label mt-1 text-fg-muted">{label}</dd>
               </div>
             ))}
           </dl>
@@ -202,21 +202,25 @@ export function CinematicHero() {
         {/* The decision trail, floating over the plot. */}
         <div
           data-rise
-          className="mt-16 w-fit rounded-2xl border border-paper/12 bg-ink/70 px-5 py-4 backdrop-blur-md lg:absolute lg:right-8 lg:bottom-24 lg:mt-0 lg:max-w-95"
+          className="mt-16 w-fit rounded-2xl border border-fg/12 bg-bg/70 px-5 py-4 backdrop-blur-md lg:absolute lg:right-8 lg:bottom-24 lg:mt-0 lg:max-w-95"
         >
-          <p className="rule-label mb-3 text-ink-soft">Decision trail · live</p>
-          <ol className="space-y-2" aria-live="polite">
-            {TRAIL.slice(0, shown).map((t) => (
-              <li key={t.text} className="flex gap-3 font-mono text-[0.68rem] leading-relaxed">
+          <p className="rule-label mb-3 text-fg-muted">Decision trail · live</p>
+          {/* No aria-live: nothing the visitor did causes these, and the
+              full list is present in the DOM for assistive tech regardless. */}
+          <ol className="space-y-2">
+            {TRAIL.map((t, i) => (
+              <li
+                key={t.text}
+                aria-hidden={i >= shown}
+                className={`flex gap-3 font-mono text-[0.75rem] leading-relaxed transition-opacity duration-500 ${
+                  i < shown ? "opacity-100" : "opacity-0"
+                }`}
+              >
                 <span className={`w-16 shrink-0 ${t.tone}`}>{t.label}</span>
-                <span className="text-paper/65">{t.text}</span>
+                <span className="text-fg/65">{t.text}</span>
               </li>
             ))}
-            {shown < TRAIL.length && (
-              <li className="font-mono text-[0.68rem] text-ink-soft">
-                <span className="motion-safe:animate-pulse">analysing…</span>
-              </li>
-            )}
+
           </ol>
         </div>
       </div>

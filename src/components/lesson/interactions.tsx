@@ -79,32 +79,32 @@ export function InspectionPanel() {
         return (
           <div
             key={inspection.id}
-            className="overflow-hidden rounded-2xl border border-paper-line bg-paper-raised"
+            className="overflow-hidden rounded-2xl border border-line bg-bg-raised"
           >
             <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4">
               <div>
-                <p className="text-[0.98rem] font-semibold text-ink">
+                <p className="text-[0.98rem] font-semibold text-fg">
                   {inspection.label}
                 </p>
-                <code className="mt-1 block text-[0.75rem] text-paper-soft">
+                <code className="mt-1 block text-[0.75rem] text-fg-muted">
                   {inspection.code}
                 </code>
               </div>
               <button
                 type="button"
                 onClick={() => run(inspection)}
-                disabled={hasRun}
+                aria-disabled={hasRun}
                 className={`shrink-0 rounded-full px-4 py-2 font-mono text-[0.75rem] transition-colors ${
                   hasRun
                     ? "border border-pass/50 text-pass"
-                    : "bg-signal text-paper hover:bg-signal-bright"
+                    : "bg-btn text-on-btn hover:bg-btn-hover"
                 }`}
               >
                 {hasRun ? "✓ measured" : "Run"}
               </button>
             </div>
             {hasRun && (
-              <div className="border-t border-paper-line p-4">
+              <div className="border-t border-line p-4">
                 <Readout lines={inspection.lines} />
               </div>
             )}
@@ -112,7 +112,7 @@ export function InspectionPanel() {
         );
       })}
 
-      <p className="pt-2 font-mono text-[0.72rem] text-paper-soft">
+      <p className="pt-2 font-mono text-[0.75rem] text-fg-muted">
         {done.length} of {INSPECTIONS.length} inspections run
       </p>
     </div>
@@ -148,7 +148,7 @@ export function ColumnStandardizer() {
 
   return (
     <div ref={ref} className="max-w-[70ch]">
-      <div className="rounded-2xl border border-paper-line bg-paper-raised p-6">
+      <div className="rounded-2xl border border-line bg-bg-raised p-6">
         <ul className="space-y-3">
           {RAW_COLUMNS.map((raw) => {
             const clean = standardizeColumnName(raw);
@@ -160,7 +160,7 @@ export function ColumnStandardizer() {
               >
                 <code
                   className={`truncate text-[0.85rem] ${
-                    applied ? "text-paper-soft/60 line-through" : "text-ink"
+                    applied ? "text-fg-muted/60 line-through" : "text-fg"
                   }`}
                 >
                   {/* Show the whitespace that a spreadsheet hides. */}
@@ -174,7 +174,7 @@ export function ColumnStandardizer() {
                     raw
                   )}
                 </code>
-                <span aria-hidden className="font-mono text-xs text-paper-soft">
+                <span aria-hidden className="font-mono text-xs text-fg-muted">
                   →
                 </span>
                 {applied ? (
@@ -182,7 +182,7 @@ export function ColumnStandardizer() {
                     {clean}
                   </code>
                 ) : (
-                  <code className="text-[0.85rem] text-paper-soft/40">
+                  <code className="text-[0.85rem] text-fg-muted/40">
                     &mdash;
                   </code>
                 )}
@@ -194,18 +194,18 @@ export function ColumnStandardizer() {
         <button
           type="button"
           onClick={apply}
-          disabled={applied}
+          aria-disabled={applied}
           className={`mt-6 rounded-full px-5 py-2.5 font-mono text-[0.78rem] transition-colors ${
             applied
               ? "border border-pass/50 text-pass"
-              : "bg-signal text-paper hover:bg-signal-bright"
+              : "bg-btn text-on-btn hover:bg-btn-hover"
           }`}
         >
           {applied ? "✓ rule applied" : "Apply the rule"}
         </button>
 
         {applied && (
-          <p className="mt-5 border-t border-paper-line pt-4 text-[0.9rem] leading-relaxed text-paper-soft">
+          <p className="mt-5 border-t border-line pt-4 text-[0.9rem] leading-relaxed text-fg-muted">
             Two of these five had invisible whitespace. That is a column you can
             see in a spreadsheet and cannot index by name in code.
           </p>
@@ -225,10 +225,14 @@ export function DuplicateFinder() {
   const reduced = usePrefersReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
 
-  // Show a slice that contains the first identical-row group so the learner
-  // sees the evidence rather than being told about it.
+  // Before scanning, an ordinary contiguous window — this is what the file
+  // looks like. After scanning, the matched rows are brought together: the
+  // groups are rows 10/35/38 and 102/143, so a contiguous window can only ever
+  // show one of them, and the learner would have to take the finding on faith.
   const start = Math.max(0, IDENTICAL_GROUPS[0][0].index - 3);
-  const window = IRIS.slice(start, start + WINDOW_SIZE);
+  const contiguous = IRIS.slice(start, start + WINDOW_SIZE);
+  const matched = IDENTICAL_GROUPS.flat();
+  const rows = found ? matched : contiguous;
 
   const scan = () => {
     if (found) return;
@@ -257,19 +261,19 @@ export function DuplicateFinder() {
 
   return (
     <div ref={ref} className="max-w-[70ch]">
-      <div className="overflow-hidden rounded-2xl border border-paper-line bg-paper-raised">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-paper-line px-5 py-3.5">
-          <code className="text-[0.75rem] text-paper-soft">
+      <div className="overflow-hidden rounded-2xl border border-line bg-bg-raised">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-3.5">
+          <code className="text-[0.75rem] text-fg-muted">
             df.duplicated(keep=False)
           </code>
           <button
             type="button"
             onClick={scan}
-            disabled={found}
+            aria-disabled={found}
             className={`rounded-full px-4 py-2 font-mono text-[0.75rem] transition-colors ${
               found
                 ? "border border-pass/50 text-pass"
-                : "bg-signal text-paper hover:bg-signal-bright"
+                : "bg-btn text-on-btn hover:bg-btn-hover"
             }`}
           >
             {found ? "✓ scanned" : "Scan all 150 rows"}
@@ -279,10 +283,12 @@ export function DuplicateFinder() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-112 border-collapse font-mono text-[0.78rem]">
             <caption className="sr-only">
-              Rows {start + 1} to {start + WINDOW_SIZE} of the Iris dataset
+              {found
+                ? `The ${matched.length} rows involved in identical-row groups, brought together`
+                : `Rows ${start + 1} to ${start + WINDOW_SIZE} of the Iris dataset`}
             </caption>
             <thead>
-              <tr className="text-paper-soft">
+              <tr className="text-fg-muted">
                 <th scope="col" className="px-4 py-2 text-left font-normal">#</th>
                 {CLEAN_COLUMNS.map((c) => (
                   <th key={c} scope="col" className="px-3 py-2 text-left font-normal">
@@ -292,15 +298,19 @@ export function DuplicateFinder() {
               </tr>
             </thead>
             <tbody>
-              {window.map((row) => {
+              {rows.map((row, i) => {
                 const isDup = IDENTICAL_ROW_INDICES.has(row.index);
+                // A hairline between groups, so three identical rows read as
+                // one group rather than as a run of six.
+                const newGroup =
+                  found && i > 0 && row.species !== rows[i - 1].species;
                 return (
                   <tr
                     key={row.index}
                     data-dup={isDup}
-                    className={`border-t border-paper-line ${
-                      found && isDup ? "text-ink" : "text-paper-soft"
-                    }`}
+                    className={`border-t ${
+                      newGroup ? "border-line" : "border-line/50"
+                    } ${found && isDup ? "text-fg" : "text-fg-muted"}`}
                   >
                     <td className="px-4 py-2">
                       {row.index}
@@ -323,7 +333,7 @@ export function DuplicateFinder() {
         </div>
 
         {found && (
-          <div className="border-t border-paper-line p-4">
+          <div className="border-t border-line p-4">
             <Readout
               tone="flag"
               lines={[
@@ -372,38 +382,38 @@ export function CoercionSandbox() {
   const after = broken ? "NaN" : "5.1";
 
   return (
-    <div className="max-w-[70ch] rounded-2xl border border-paper-line bg-paper-raised p-6">
-      <p className="rule-label mb-4 text-paper-soft">
+    <div className="max-w-[70ch] rounded-2xl border border-line bg-bg-raised p-6">
+      <p className="rule-label mb-4 text-fg-muted">
         Sandbox · hypothetical value
       </p>
 
       <div className="grid gap-4 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
-        <div className="rounded-xl border border-paper-line p-4">
-          <p className="rule-label mb-2 text-paper-soft">Before</p>
-          <code className="text-[0.9rem] text-ink">
+        <div className="rounded-xl border border-line p-4">
+          <p className="rule-label mb-2 text-fg-muted">Before</p>
+          <code className="text-[0.9rem] text-fg">
             sepal_length[0] = {value}
           </code>
-          <p className="mt-2 font-mono text-[0.7rem] text-paper-soft">
+          <p className="mt-2 font-mono text-[0.75rem] text-fg-muted">
             dtype: {broken ? "object" : "float64"}
           </p>
         </div>
-        <span aria-hidden className="hidden text-center font-mono text-paper-soft sm:block">
+        <span aria-hidden className="hidden text-center font-mono text-fg-muted sm:block">
           →
         </span>
         <div
           className={`rounded-xl border p-4 ${
-            coerced && broken ? "border-change/50 bg-change/5" : "border-paper-line"
+            coerced && broken ? "border-change/50 bg-change/5" : "border-line"
           }`}
         >
-          <p className="rule-label mb-2 text-paper-soft">After coercion</p>
+          <p className="rule-label mb-2 text-fg-muted">After coercion</p>
           <code
             className={`text-[0.9rem] ${
-              coerced && broken ? "text-change" : "text-ink"
+              coerced && broken ? "text-change" : "text-fg"
             }`}
           >
             sepal_length[0] = {coerced ? after : "—"}
           </code>
-          <p className="mt-2 font-mono text-[0.7rem] text-paper-soft">
+          <p className="mt-2 font-mono text-[0.75rem] text-fg-muted">
             missing created: {coerced ? (broken ? "1" : "0") : "—"}
           </p>
         </div>
@@ -416,18 +426,18 @@ export function CoercionSandbox() {
             setBroken((v) => !v);
             setCoerced(false);
           }}
-          className="rounded-full border border-paper-line px-4 py-2 font-mono text-[0.75rem] text-ink transition-colors hover:border-flag"
+          className="rounded-full border border-line px-4 py-2 font-mono text-[0.75rem] text-fg transition-colors hover:border-flag"
         >
           {broken ? "Restore the real value" : 'Replace with "not recorded"'}
         </button>
         <button
           type="button"
           onClick={runCoercion}
-          disabled={coerced}
+          aria-disabled={coerced}
           className={`rounded-full px-4 py-2 font-mono text-[0.75rem] transition-colors ${
             coerced
               ? "border border-pass/50 text-pass"
-              : "bg-signal text-paper hover:bg-signal-bright"
+              : "bg-btn text-on-btn hover:bg-btn-hover"
           }`}
         >
           {coerced ? "✓ converted" : 'Run errors="coerce"'}
@@ -436,14 +446,14 @@ export function CoercionSandbox() {
           <button
             type="button"
             onClick={reset}
-            className="rounded-full px-4 py-2 font-mono text-[0.75rem] text-paper-soft underline underline-offset-4"
+            className="rounded-full px-4 py-2 font-mono text-[0.75rem] text-fg-muted underline underline-offset-4"
           >
             Try the other way
           </button>
         )}
       </div>
 
-      <p className="mt-6 border-t border-paper-line pt-4 text-[0.9rem] leading-relaxed text-paper-soft">
+      <p className="mt-6 border-t border-line pt-4 text-[0.9rem] leading-relaxed text-fg-muted">
         {coerced && broken
           ? "Coercion made the invalid value visible as missing data — and created a missing value that was not there before. That is why the count is reported, and why conversion happens before missing-value handling."
           : coerced
@@ -498,24 +508,25 @@ export function MissingValueRules() {
   const chosen = RULES.find((r) => r.id === picked);
 
   return (
-    <div className="max-w-[70ch] rounded-2xl border border-paper-line bg-paper-raised p-6">
+    <div className="max-w-[70ch] rounded-2xl border border-line bg-bg-raised p-6">
       <fieldset className="border-0 p-0">
-        <legend className="rule-label mb-4 text-paper-soft">
+        <legend className="rule-label mb-4 text-fg-muted">
           Choose a rule, then apply it
         </legend>
-        <div className="space-y-2.5">
+        <div role="radiogroup" className="space-y-2.5">
           {RULES.map((rule) => (
             <button
               key={rule.id}
               type="button"
+              role="radio"
+              aria-checked={picked === rule.id}
               onClick={() => choose(rule)}
-              aria-pressed={picked === rule.id}
               className={`block w-full rounded-xl border px-5 py-3.5 text-left text-[0.95rem] transition-colors ${
                 picked === rule.id
                   ? rule.recommended
-                    ? "border-pass bg-pass/10 text-ink"
-                    : "border-flag bg-flag/10 text-ink"
-                  : "border-paper-line text-ink hover:border-signal"
+                    ? "border-pass bg-pass/10 text-fg"
+                    : "border-flag bg-flag/10 text-fg"
+                  : "border-line text-fg hover:border-signal"
               }`}
             >
               {rule.label}
@@ -527,10 +538,10 @@ export function MissingValueRules() {
       <div role="status" aria-live="polite" className="mt-5 min-h-16">
         {chosen && (
           <div className="rounded-xl border-l-2 border-signal bg-signal/5 p-5">
-            <p className="font-mono text-[0.72rem] text-signal">
+            <p className="font-mono text-[0.75rem] text-signal">
               {chosen.effect}
             </p>
-            <p className="mt-3 text-[0.92rem] leading-relaxed text-paper-soft">
+            <p className="mt-3 text-[0.92rem] leading-relaxed text-fg-muted">
               {chosen.recommended
                 ? "Every rule produces the same result on this dataset, because there is nothing to impute. The difference between them only appears on data that needs them — which is why you choose the rule deliberately now, not later under pressure."
                 : "On Iris this is harmless. Pick the rule you would defend on a dataset that actually has gaps."}
@@ -599,7 +610,7 @@ export function ValidationRun() {
   const allPassed = passed.length === ASSERTIONS.length;
 
   return (
-    <div className="max-w-[70ch] rounded-2xl border border-paper-line bg-paper-raised p-6">
+    <div className="max-w-[70ch] rounded-2xl border border-line bg-bg-raised p-6">
       <ol className="space-y-3">
         {ASSERTIONS.map((assertion) => {
           const ok = passed.includes(assertion.id);
@@ -607,25 +618,25 @@ export function ValidationRun() {
             <li key={assertion.id} className="flex items-start gap-3.5">
               <span
                 aria-hidden
-                className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border font-mono text-[0.65rem] transition-colors ${
+                className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border font-mono text-[0.75rem] transition-colors ${
                   ok
-                    ? "border-pass bg-pass text-ink"
-                    : "border-paper-line text-paper-soft"
+                    ? "border-marker-pass bg-marker-pass text-on-accent"
+                    : "border-line text-fg-muted"
                 }`}
               >
                 {ok ? "✓" : "·"}
               </span>
               <div className="min-w-0">
                 <p
-                  className={`text-[0.95rem] ${ok ? "text-ink" : "text-paper-soft"}`}
+                  className={`text-[0.95rem] ${ok ? "text-fg" : "text-fg-muted"}`}
                 >
                   {assertion.label}
                 </p>
-                <code className="mt-1 block truncate text-[0.72rem] text-paper-soft/70">
+                <code className="mt-1 block truncate text-[0.75rem] text-fg-muted/70">
                   {assertion.code}
                 </code>
                 {ok && (
-                  <p className="mt-1 font-mono text-[0.7rem] text-pass">
+                  <p className="mt-1 font-mono text-[0.75rem] text-pass">
                     {assertion.result}
                   </p>
                 )}
@@ -638,17 +649,17 @@ export function ValidationRun() {
       <button
         type="button"
         onClick={run}
-        disabled={running || allPassed}
+        aria-disabled={running || allPassed}
         className={`mt-6 rounded-full px-5 py-2.5 font-mono text-[0.78rem] transition-colors ${
           allPassed
             ? "border border-pass/50 text-pass"
-            : "bg-signal text-paper hover:bg-signal-bright"
+            : "bg-btn text-on-btn hover:bg-btn-hover"
         }`}
       >
         {allPassed ? "✓ validated" : running ? "running…" : "Run validation"}
       </button>
 
-      <p aria-live="polite" className="mt-5 text-[0.9rem] leading-relaxed text-paper-soft">
+      <p aria-live="polite" className="mt-5 text-[0.9rem] leading-relaxed text-fg-muted">
         {allPassed
           ? "Notice what is not asserted: that identical rows must be absent. Assertions should express conditions justified by this dataset and this downstream purpose — not assumptions every dataset must satisfy."
           : "Three assertions, each one a condition you decided the output table must meet."}
@@ -681,27 +692,27 @@ export function DiffReveal() {
         <button
           type="button"
           onClick={reveal}
-          className="rounded-full bg-signal px-5 py-2.5 font-mono text-[0.78rem] text-paper transition-colors hover:bg-signal-bright"
+          className="rounded-full bg-btn px-5 py-2.5 font-mono text-[0.78rem] text-on-btn transition-colors hover:bg-btn-hover"
         >
           Compare input and output
         </button>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-ink-line bg-ink">
-          <div className="border-b border-ink-line px-4 py-2.5">
-            <code className="text-[0.7rem] text-ink-soft">
+        <div className="surface-sunken overflow-hidden rounded-2xl border border-line/40">
+          <div className="border-b border-line px-4 py-2.5">
+            <code className="text-[0.75rem] text-onsunken-muted">
               diff data/iris.csv data/iris_clean.csv
             </code>
           </div>
           <div className="space-y-1.5 px-4 py-4 font-mono text-[0.75rem]">
-            <p data-diff-line className="text-paper/70">
+            <p data-diff-line className="text-fg-onsunken/80">
               rows in: {DATASET_FACTS.rows} &nbsp;→&nbsp; rows out:{" "}
               {DATASET_FACTS.rows}
             </p>
-            <p data-diff-line className="text-paper/70">
+            <p data-diff-line className="text-fg-onsunken/80">
               missing in: {DATASET_FACTS.missingValues} &nbsp;→&nbsp; missing
               out: {DATASET_FACTS.missingValues}
             </p>
-            <p data-diff-line className="text-paper/70">
+            <p data-diff-line className="text-fg-onsunken/80">
               identical rows: {DATASET_FACTS.identicalRowCount} retained,{" "}
               {DATASET_FACTS.confirmedDuplicatesRemoved} removed
             </p>

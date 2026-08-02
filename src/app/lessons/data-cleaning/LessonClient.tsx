@@ -63,7 +63,10 @@ export function LessonClient() {
 
 function LessonBody() {
   const { completed } = useTrail();
-  const readyForArtifact = completed.length >= 4;
+  // Count only real sections: `assertion` is a knowledge-check id, not a
+  // section, so the raw length unlocked the artifact one step early.
+  const readyForArtifact =
+    SECTIONS.filter((s) => s.requiresAction && completed.includes(s.id)).length >= 4;
 
   return (
     <main id="main">
@@ -73,13 +76,13 @@ function LessonBody() {
       <Placeholder
         kind="asset"
         label="8s chapter opener (V3)"
-        className="mt-12 aspect-21/9 bg-ink"
+        className="mt-12 bg-bg-alt"
       >
-        <div className="flex h-full flex-col justify-center gap-2 p-8 text-center">
-          <p className="font-mono text-[0.8rem] text-inspect">
+        <div className="flex flex-col gap-1.5 px-6 py-7">
+          <p className="font-mono text-[0.78rem] text-inspect">
             Misaligned monospace rows settle into a precise grid, one at a time.
           </p>
-          <p className="font-mono text-[0.8rem] text-flag">
+          <p className="font-mono text-[0.78rem] text-flag">
             Three rows stay highlighted in amber and never resolve.
           </p>
         </div>
@@ -408,7 +411,7 @@ function LessonBody() {
         {readyForArtifact ? (
           <ArtifactReport />
         ) : (
-          <p className="max-w-[62ch] rounded-xl border border-dashed border-paper-line px-5 py-4 font-mono text-[0.78rem] text-paper-soft">
+          <p className="max-w-[62ch] rounded-xl border border-dashed border-line px-5 py-4 font-mono text-[0.78rem] text-fg-muted">
             Work through the sections above and your report will assemble here.
           </p>
         )}
@@ -417,10 +420,10 @@ function LessonBody() {
       {/* ── Summary and next step ──────────────────────────────────────── */}
       <section
         aria-labelledby="summary-title"
-        className="scroll-mt-24 border-t border-paper-line py-14 lg:py-20"
+        className="scroll-mt-24 border-t border-line py-14 lg:py-20"
       >
         <p className="rule-label mb-4 text-signal">Summary</p>
-        <h2 id="summary-title" className="text-title max-w-[22ch] text-balance text-ink">
+        <h2 id="summary-title" className="text-title max-w-[22ch] text-balance text-fg">
           What you did
         </h2>
 
@@ -434,7 +437,7 @@ function LessonBody() {
             "Validated against conditions justified by this dataset",
             "Produced a cleaning report that explains all of it",
           ].map((item) => (
-            <li key={item} className="flex gap-3 text-[0.98rem] text-paper-soft">
+            <li key={item} className="flex gap-3 text-[0.98rem] text-fg-muted">
               <span aria-hidden className="mt-0.5 shrink-0 font-mono text-xs text-pass">
                 ✓
               </span>
@@ -444,12 +447,12 @@ function LessonBody() {
         </ul>
 
         <div className="mt-14 grid gap-4 lg:grid-cols-2">
-          <div className="rounded-3xl border border-paper-line bg-paper-raised p-7">
+          <div className="rounded-3xl border border-line bg-bg-raised p-7">
             <p className="rule-label mb-4 text-signal">Next, free</p>
-            <h3 className="text-[1.2rem] font-semibold text-ink">
+            <h3 className="text-[1.2rem] font-semibold text-fg">
               Data Wrangling Basics
             </h3>
-            <p className="mt-3 text-[0.95rem] leading-relaxed text-paper-soft">
+            <p className="mt-3 text-[0.95rem] leading-relaxed text-fg-muted">
               The table you just prepared becomes the input for chapter 04, where
               it gets transformed and organized for analysis.
             </p>
@@ -464,12 +467,12 @@ function LessonBody() {
           </div>
 
           {/* The free→paid handoff that does not exist on the live site. */}
-          <div className="rounded-3xl border-2 border-signal bg-paper-raised p-7">
+          <div className="rounded-3xl border-2 border-signal bg-bg-raised p-7">
             <p className="rule-label mb-4 text-signal">Next, $14.99</p>
-            <h3 className="text-[1.2rem] font-semibold text-ink">
+            <h3 className="text-[1.2rem] font-semibold text-fg">
               Data Cleaning and Validation Practical
             </h3>
-            <p className="mt-3 text-[0.95rem] leading-relaxed text-paper-soft">
+            <p className="mt-3 text-[0.95rem] leading-relaxed text-fg-muted">
               You made these decisions on 150 tidy rows with the rules chosen for
               you. The practical gives you the reusable script, a messy
               real-world dataset, and the report generator — so you can run this
@@ -479,7 +482,7 @@ function LessonBody() {
               href="https://complexdatainsights.com/product/data-cleaning-and-validation-practical/"
               target="_blank"
               rel="noreferrer"
-              className="mt-6 inline-block rounded-full bg-signal px-5 py-2.5 font-mono text-[0.78rem] text-paper transition-transform hover:scale-[1.03]"
+              className="mt-6 inline-block rounded-full bg-btn px-5 py-2.5 font-mono text-[0.78rem] text-on-btn transition-transform hover:scale-[1.03]"
             >
               See the practical
             </a>
@@ -487,7 +490,7 @@ function LessonBody() {
         </div>
 
         <div className="mt-10 space-y-3">
-          <p className="rule-label text-paper-soft">Optional deeper reading</p>
+          <p className="rule-label text-fg-muted">Optional deeper reading</p>
           <DeeperReading
             href={CHAPTER}
             label="The original chapter · DS-L03"
@@ -500,7 +503,7 @@ function LessonBody() {
           />
         </div>
 
-        <p className="mt-14 max-w-[62ch] border-t border-paper-line pt-6 text-[0.85rem] leading-relaxed text-paper-soft">
+        <p className="mt-14 max-w-[62ch] border-t border-line pt-6 text-[0.85rem] leading-relaxed text-fg-muted">
           Adapted from the Complex Data Insights Data Science Foundations System,
           chapter 03, by Teresia Mrema Buza — published under CC BY 4.0. Data is
           the canonical UCI Iris dataset.

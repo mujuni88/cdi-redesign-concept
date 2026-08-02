@@ -3,14 +3,25 @@
 /*
   Complex Data Insights — design tokens.
 
-  Colour is information here, not decoration. #036281 (petrol) and #f7c546 (amber)
-  are CDI's existing brand tokens, carried over from the live site and the
-  cdi_viz.theme package used in the Python visualization guide.
+  THEMING
+  Light is the default. `[data-theme="dark"]` overrides the same custom
+  properties, so every Tailwind utility built from them flips without a single
+  conditional class in a component.
 
-  The accent ramp is viridis — the perceptually-uniform, colour-vision-safe scale
-  that matplotlib and seaborn use by default, and that CDI's own material teaches.
-  Each stop is bound to a state a dataset can be in, and the UI uses them only for
-  that state:
+  The original thesis — dark to browse, light to work — survives as a
+  *relative* relationship rather than an absolute one: the browse ground is
+  always one step deeper than the work surface. In light that reads as tinted
+  vellum against white; in dark, as petrol-black against raised slate. It also
+  gives the generated chart art two honest registers: on light it reads like a
+  published figure, on dark like output on a screen.
+
+  ACCENTS COME IN TWO FLAVOURS
+  --chart-*  fixed viridis + brand values for SVG marks. They must not move,
+             because they encode data state and are chosen for perceptual
+             uniformity and colour-vision safety.
+  --color-*  text-safe variants of the same semantics, darkened on light and
+             lightened on dark so every label clears 4.5:1. Previously one set
+             did both jobs and the on-dark labels sat at 3.25:1.
 
     raw      violet  untouched, unexamined
     inspect  blue    measured, not yet decided
@@ -21,25 +32,66 @@
 */
 
 @theme {
-  --color-ink: #040e14;
-  --color-ink-raised: #0a1a22;
-  --color-ink-line: #1d3641;
-  --color-ink-soft: #8aa4ad;
+  /* Surfaces and text — overridden wholesale by [data-theme="dark"] below. */
+  --color-bg: #f4f7f8;
+  --color-bg-alt: #ffffff;
+  --color-bg-raised: #ffffff;
+  --color-bg-sunken: #0a1a22;
+  --color-line: #c8d6da;
+  --color-line-soft: #dde6e8;
+  --color-fg: #06131a;
+  --color-fg-muted: #495e66;
+  --color-fg-onsunken: #eef3f4;
+  /* Sunken panels are dark in BOTH themes, so anything inside one needs
+     colours pinned to a dark ground rather than to the page theme. */
+  --color-onsunken-muted: #8aa4ad;
+  --color-onsunken-inspect: #6aa4cf;
+  --color-onsunken-valid: #34b3ad;
+  --color-onsunken-pass: #4ecb8d;
+  --color-onsunken-flag: #f7c546;
+  --color-focus: #036281;
 
-  --color-paper: #f1f5f6;
-  --color-paper-raised: #ffffff;
-  --color-paper-line: #d3dee1;
-  --color-paper-soft: #4d6169;
-
+  /* Text-safe accents (light theme values). */
   --color-signal: #036281;
-  --color-signal-bright: #0b93bb;
-
+  --color-inspect: #2c5d80;
+  --color-valid: #136d68;
+  --color-pass: #15704a;
+  --color-flag: #8a6300;
+  --color-change: #b8232f;
   --color-raw: #440154;
-  --color-inspect: #31688e;
-  --color-valid: #21918c;
-  --color-pass: #35b779;
-  --color-flag: #f7c546;
-  --color-change: #d64550;
+
+  /* Filled controls keep the same colours in both themes — a primary action
+     should not change identity just because the page ground did. Each pair is
+     fixed so the label can never flip to the wrong side of its own button. */
+  --color-accent: #f7c546;      /* amber CTA */
+  --color-on-accent: #06131a;   /* 11.68:1 */
+  --color-btn: #036281;         /* petrol primary */
+  --color-on-btn: #f1f5f6;      /* 6.24:1 */
+  --color-btn-hover: #024d66;
+  --color-marker-pass: #35b779; /* dark ink on it: 7.35:1 */
+  --color-marker-change: #b8232f; /* white on it: 6.33:1 */
+
+  /* Chart marks — never themed. */
+  --color-chart-raw: #440154;
+  --color-chart-inspect: #31688e;
+  --color-chart-valid: #21918c;
+  --color-chart-pass: #35b779;
+  --color-chart-lime: #90d743;
+  --color-chart-flag: #f7c546;
+  --color-chart-change: #d64550;
+
+  /* Chart chrome — themed, so posters sit correctly on either ground. */
+  --color-plot-from: #ffffff;
+  --color-plot-to: #eef3f5;
+  --color-plot-grid: #cbd8dc;
+  --color-plot-noise: #93a9b2;
+  --color-plot-panel: #f4f7f8;
+  --color-plot-label: #5a7079;
+  /* Signal points in the hero plot. Amber on near-white is 1.6:1, so on light
+     the plot uses the darker text-safe pair and reads like a printed figure. */
+  --color-plot-up: #8a6300;
+  --color-plot-down: #136d68;
+  --color-plot-glow: rgb(3 98 129 / 0.16);
 
   --font-display: var(--font-bricolage), "Trebuchet MS", sans-serif;
   --font-body: var(--font-literata), Georgia, serif;
@@ -56,15 +108,51 @@
   --text-title--letter-spacing: -0.016em;
 }
 
+[data-theme="dark"] {
+  --color-bg: #040e14;
+  --color-bg-alt: #0a1a22;
+  --color-bg-raised: #0e222b;
+  --color-bg-sunken: #01080c;
+  --color-line: #2c4a56;
+  --color-line-soft: #1b333d;
+  --color-fg: #f1f5f6;
+  --color-fg-muted: #9db4bc;
+  --color-fg-onsunken: #eef3f4;
+  --color-focus: #f7c546;
+
+  --color-signal: #4bb4d8;
+  --color-inspect: #6aa4cf;
+  --color-valid: #34b3ad;
+  --color-pass: #4ecb8d;
+  --color-flag: #f7c546;
+  --color-change: #ff7b85;
+  --color-raw: #a06bbd;
+
+  --color-plot-from: #0b1f28;
+  --color-plot-to: #05121a;
+  --color-plot-grid: #24414d;
+  --color-plot-noise: #3d5a66;
+  --color-plot-panel: #0d2028;
+  --color-plot-label: #8aa4ad;
+  --color-plot-up: #f7c546;
+  --color-plot-down: #21918c;
+  --color-plot-glow: rgb(3 98 129 / 0.5);
+}
+
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
+    color-scheme: light;
+  }
+
+  html[data-theme="dark"] {
+    color-scheme: dark;
   }
 
   body {
-    background: var(--color-ink);
-    color: var(--color-paper);
+    background: var(--color-bg);
+    color: var(--color-fg);
     font-family: var(--font-body);
     font-optical-sizing: auto;
     -webkit-font-smoothing: antialiased;
@@ -91,29 +179,39 @@
     font-feature-settings: "zero" 1;
   }
 
+  /* Surface-aware. Amber measured 1.47:1 on the light work surface, which made
+     the ring invisible on every focus stop of the lesson page. */
   :focus-visible {
-    outline: 2px solid var(--color-flag);
+    outline: 2px solid var(--color-focus);
     outline-offset: 3px;
     border-radius: 3px;
   }
 
   ::selection {
-    background: var(--color-valid);
-    color: var(--color-ink);
+    background: var(--color-chart-valid);
+    color: #ffffff;
   }
 }
 
-/* Dark surfaces are where you browse; light surfaces are where you work. */
-@utility surface-paper {
-  background: var(--color-paper);
-  color: var(--color-ink);
+/* The alternating "work" surface: one step lighter than the browse ground in
+   light, one step raised in dark. */
+@utility surface-alt {
+  background: var(--color-bg-alt);
+  color: var(--color-fg);
+}
+
+/* Always-dark panel, in both themes — used where the thing genuinely is
+   terminal output (the decision trail, a generated report, a code block). */
+@utility surface-sunken {
+  background: var(--color-bg-sunken);
+  color: var(--color-fg-onsunken);
 }
 
 @utility rule-label {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  line-height: 1;
-  letter-spacing: 0.16em;
+  font-size: 0.75rem;
+  line-height: 1.15;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
@@ -145,7 +243,10 @@
 
 /* Reduced motion: GSAP timelines are gated in JS (see lib/useGsap.ts), but
    anything driven purely by CSS has to stand down here too. No content is ever
-   only reachable through a transition. */
+   only reachable through a transition.
+
+   Scoped to transform/opacity-style motion rather than blanket-killing every
+   transition, so colour and size affordances still feel responsive. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

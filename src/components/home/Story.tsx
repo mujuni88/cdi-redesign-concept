@@ -40,15 +40,15 @@ export function HowItWorks() {
     <section
       ref={scope as React.RefObject<HTMLElement>}
       aria-labelledby="how-heading"
-      className="surface-paper border-b border-paper-line px-5 py-20 sm:px-8 lg:py-28"
+      className="surface-alt border-b border-line px-5 py-20 sm:px-8 lg:py-28"
     >
       <div className="mx-auto grid max-w-350 gap-14 lg:grid-cols-[0.9fr_1fr] lg:gap-20">
         <div>
           <p className="rule-label mb-5 text-signal">How it works</p>
-          <h2 id="how-heading" className="text-display max-w-[16ch] text-balance text-ink">
+          <h2 id="how-heading" className="text-display max-w-[16ch] text-balance text-fg">
             A lesson you do, not a page you finish.
           </h2>
-          <p className="mt-6 max-w-[44ch] text-[1.0625rem] leading-relaxed text-paper-soft">
+          <p className="mt-6 max-w-[44ch] text-[1.0625rem] leading-relaxed text-fg-muted">
             CDI&rsquo;s own workflow keeps four things: the input table, the
             script, the cleaned output, and the report. The report is the part
             that makes the other three trustworthy — so the lessons are built
@@ -56,11 +56,11 @@ export function HowItWorks() {
           </p>
 
           {/* The signature component, shown here as illustration. */}
-          <div className="mt-10 rounded-2xl border border-paper-line bg-ink p-5">
-            <p className="rule-label mb-4 text-ink-soft">
+          <div className="surface-sunken mt-10 rounded-2xl border border-line/40 p-5">
+            <p className="rule-label mb-4 text-onsunken-muted">
               cleaning-report.txt · excerpt
             </p>
-            <ol className="space-y-2.5 font-mono text-[0.7rem] leading-relaxed">
+            <ol className="space-y-2.5 font-mono text-[0.75rem] leading-relaxed">
               {[
                 ["MEASURED", "text-inspect", "150 rows, 5 columns, 0 missing values"],
                 ["RULE APPLIED", "text-valid", "Column names standardized to snake_case"],
@@ -69,16 +69,16 @@ export function HowItWorks() {
               ].map(([label, tone, text]) => (
                 <li key={text} className="flex gap-3">
                   <span className={`w-24 shrink-0 ${tone}`}>{label}</span>
-                  <span className="text-paper/70">{text}</span>
+                  <span className="text-fg-onsunken/80">{text}</span>
                 </li>
               ))}
             </ol>
           </div>
         </div>
 
-        <ol className="grid gap-px overflow-hidden rounded-3xl border border-paper-line bg-paper-line">
+        <ol className="grid gap-px overflow-hidden rounded-3xl border border-line bg-line">
           {STEPS.map((step, i) => (
-            <li key={step.title} data-step className="bg-paper-raised p-7 lg:p-9">
+            <li key={step.title} data-step className="bg-bg-raised p-7 lg:p-9">
               <div className="flex gap-5">
                 <span
                   aria-hidden
@@ -87,10 +87,10 @@ export function HowItWorks() {
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div>
-                  <h3 className="text-[1.15rem] font-semibold text-ink">
+                  <h3 className="text-[1.15rem] font-semibold text-fg">
                     {step.title}
                   </h3>
-                  <p className="mt-2.5 text-[0.95rem] leading-relaxed text-paper-soft">
+                  <p className="mt-2.5 text-[0.95rem] leading-relaxed text-fg-muted">
                     {step.body}
                   </p>
                 </div>
@@ -108,7 +108,7 @@ export function Instructor() {
     <section
       id="about"
       aria-labelledby="instructor-heading"
-      className="border-b border-ink-line px-5 py-20 sm:px-8 lg:py-28"
+      className="border-b border-line px-5 py-20 sm:px-8 lg:py-28"
     >
       <div className="mx-auto grid max-w-350 gap-12 lg:grid-cols-[0.8fr_1fr] lg:gap-20">
         <div>
@@ -116,10 +116,10 @@ export function Instructor() {
           <Placeholder
             kind="asset"
             label="Instructor photo + 70s intro (V2)"
-            className="aspect-4/5 bg-ink-raised"
+            className="aspect-4/3 bg-bg-alt"
           >
             <div className="flex h-full flex-col justify-end p-7">
-              <p className="text-[0.85rem] leading-relaxed text-ink-soft">
+              <p className="text-[0.85rem] leading-relaxed text-fg-muted">
                 Should be filmed, not generated. A synthetic avatar of a real
                 named scientist would undermine the exact credibility it exists
                 to build.
@@ -137,19 +137,19 @@ export function Instructor() {
             Teresia Mrema Buza
           </h2>
 
-          <p className="mt-6 max-w-[48ch] text-[1.0625rem] leading-relaxed text-paper/85">
+          <p className="mt-6 max-w-[48ch] text-[1.0625rem] leading-relaxed text-fg/85">
             A computational biologist and data scientist, and an independent
             researcher since 2019. Her work spans computational biology,
             multi-omics interpretation, statistical analysis, and reproducible
             data workflows.
           </p>
 
-          <blockquote className="mt-8 max-w-[48ch] border-l-2 border-flag pl-5 text-[1.05rem] leading-relaxed text-paper italic">
+          <blockquote className="mt-8 max-w-[48ch] border-l-2 border-flag pl-5 text-[1.05rem] leading-relaxed text-fg italic">
             &ldquo;Many people can access tools and tutorials but receive less
             support in connecting those tools into coherent workflows,
             interpreting results, documenting decisions, and turning completed
             work into real capability.&rdquo;
-            <footer className="mt-3 font-mono text-xs text-ink-soft not-italic">
+            <footer className="mt-3 font-mono text-xs text-fg-muted not-italic">
               — the founding observation, from complexdatainsights.com/about
             </footer>
           </blockquote>
@@ -158,12 +158,12 @@ export function Instructor() {
             <p className="rule-label mb-4 text-change">
               Placeholder · claims requiring confirmation
             </p>
-            <p className="mb-4 text-[0.9rem] leading-relaxed text-ink-soft">
+            <p className="mb-4 text-[0.9rem] leading-relaxed text-fg-muted">
               These are externally verifiable and currently appear nowhere on the
               live site. They are the strongest credibility signals CDI has, and
               they should be published — after TMB confirms them.
             </p>
-            <ul className="space-y-2.5 text-[0.92rem] text-paper/80">
+            <ul className="space-y-2.5 text-[0.92rem] text-fg/80">
               <li>
                 <UnverifiedNote>978 citations, h-index 10</UnverifiedNote> on
                 Google Scholar
@@ -195,47 +195,47 @@ export function StartFree() {
     <section
       id="practicals"
       aria-labelledby="start-heading"
-      className="surface-paper px-5 py-20 sm:px-8 lg:py-28"
+      className="surface-alt px-5 py-20 sm:px-8 lg:py-28"
     >
       <div className="mx-auto max-w-350">
         <p className="rule-label mb-5 text-signal">{CDI.tagline}</p>
-        <h2 id="start-heading" className="text-display max-w-[18ch] text-balance text-ink">
+        <h2 id="start-heading" className="text-display max-w-[18ch] text-balance text-fg">
           What&rsquo;s free, and what isn&rsquo;t.
         </h2>
 
         <div className="mt-14 grid gap-5 lg:grid-cols-3">
-          <div className="rounded-3xl border-2 border-signal bg-paper-raised p-8 lg:p-10">
+          <div className="rounded-3xl border-2 border-signal bg-bg-raised p-8 lg:p-10">
             <p className="rule-label mb-6 text-signal">Learn openly · free</p>
-            <p className="font-display text-4xl font-semibold text-ink">
+            <p className="font-display text-4xl font-semibold text-fg">
               {CDI.chapterCount}
             </p>
-            <p className="mt-2 text-[0.95rem] text-paper-soft">
+            <p className="mt-2 text-[0.95rem] text-fg-muted">
               chapters across {CDI.guideCount} open guides
             </p>
-            <p className="mt-6 text-[0.95rem] leading-relaxed text-paper-soft">
+            <p className="mt-6 text-[0.95rem] leading-relaxed text-fg-muted">
               No account, no paywall, no subscription. Published under CC BY 4.0
               for the writing and MIT for the code — you can reuse it with
               attribution.
             </p>
             <Link
               href="/lessons/data-cleaning"
-              className="mt-8 inline-block rounded-full bg-signal px-6 py-3.5 font-mono text-sm text-paper transition-transform hover:scale-[1.03]"
+              className="mt-8 inline-block rounded-full bg-btn px-6 py-3.5 font-mono text-sm text-on-btn transition-transform hover:scale-[1.03]"
             >
               Start the free lesson
             </Link>
           </div>
 
-          <div className="rounded-3xl border border-paper-line bg-paper-raised p-8 lg:p-10">
-            <p className="rule-label mb-6 text-paper-soft">
+          <div className="rounded-3xl border border-line bg-bg-raised p-8 lg:p-10">
+            <p className="rule-label mb-6 text-fg-muted">
               Practise independently · paid
             </p>
-            <p className="font-display text-4xl font-semibold text-ink">
+            <p className="font-display text-4xl font-semibold text-fg">
               ${CDI.priceLow}–${CDI.priceHigh}
             </p>
-            <p className="mt-2 text-[0.95rem] text-paper-soft">
+            <p className="mt-2 text-[0.95rem] text-fg-muted">
               one-time, per practical. {CDI.practicalCount} available.
             </p>
-            <p className="mt-6 text-[0.95rem] leading-relaxed text-paper-soft">
+            <p className="mt-6 text-[0.95rem] leading-relaxed text-fg-muted">
               A practical gives you the runnable end-to-end script, a real
               dataset, and the outputs — so you can run the workflow against your
               own data rather than reading about it.
@@ -244,7 +244,7 @@ export function StartFree() {
               href={`${CDI.site}/practicals/`}
               target="_blank"
               rel="noreferrer"
-              className="mt-8 inline-block rounded-full border border-paper-line px-6 py-3.5 font-mono text-sm text-ink transition-colors hover:border-signal hover:text-signal"
+              className="mt-8 inline-block rounded-full border border-line px-6 py-3.5 font-mono text-sm text-fg transition-colors hover:border-signal hover:text-signal"
             >
               Browse practicals
             </a>
@@ -252,18 +252,18 @@ export function StartFree() {
 
           <div
             id="mentorship"
-            className="rounded-3xl border border-dashed border-flag/60 bg-paper-raised p-8 lg:p-10"
+            className="rounded-3xl border border-dashed border-flag/60 bg-bg-raised p-8 lg:p-10"
           >
             <p className="rule-label mb-6 text-signal">
               Grow with guidance · paid
             </p>
-            <p className="font-display text-4xl font-semibold text-paper-soft/50">
+            <p className="font-display text-4xl font-semibold text-fg-muted/50">
               [price TBD]
             </p>
-            <p className="mt-2 text-[0.95rem] text-paper-soft">
+            <p className="mt-2 text-[0.95rem] text-fg-muted">
               Placeholder — mentorship is currently unpriced.
             </p>
-            <p className="mt-6 text-[0.95rem] leading-relaxed text-paper-soft">
+            <p className="mt-6 text-[0.95rem] leading-relaxed text-fg-muted">
               Review of your own analysis, workflow, or report. Publishing three
               tiers with real prices and a booking link is the single largest
               commercial gap on the live site.
@@ -272,7 +272,7 @@ export function StartFree() {
               href={`${CDI.site}/mentorship/`}
               target="_blank"
               rel="noreferrer"
-              className="mt-8 inline-block rounded-full border border-paper-line px-6 py-3.5 font-mono text-sm text-ink transition-colors hover:border-signal hover:text-signal"
+              className="mt-8 inline-block rounded-full border border-line px-6 py-3.5 font-mono text-sm text-fg transition-colors hover:border-signal hover:text-signal"
             >
               How mentorship works
             </a>
@@ -285,25 +285,25 @@ export function StartFree() {
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-ink-line px-5 py-14 sm:px-8">
+    <footer className="border-t border-line px-5 py-14 sm:px-8">
       <div className="mx-auto flex max-w-350 flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="font-display text-lg font-semibold">
             Complex Data Insights
           </p>
-          <p className="mt-2 max-w-[40ch] text-[0.9rem] text-ink-soft">
+          <p className="mt-2 max-w-[40ch] text-[0.9rem] text-fg-muted">
             {CDI.tagline}
           </p>
         </div>
-        <div className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs text-ink-soft">
-          <a href={CDI.site} target="_blank" rel="noreferrer" className="hover:text-flag">
+        <div className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs text-fg-muted">
+          <a href={CDI.site} target="_blank" rel="noreferrer" className="inline-block py-2 hover:text-flag">
             Live site
           </a>
           <a
             href="https://github.com/tmbuza"
             target="_blank"
             rel="noreferrer"
-            className="hover:text-flag"
+            className="inline-block py-2 hover:text-flag"
           >
             GitHub
           </a>
@@ -311,13 +311,13 @@ export function SiteFooter() {
             href="https://www.linkedin.com/in/tmb-cdi/"
             target="_blank"
             rel="noreferrer"
-            className="hover:text-flag"
+            className="inline-block py-2 hover:text-flag"
           >
             LinkedIn
           </a>
         </div>
       </div>
-      <p className="mx-auto mt-10 max-w-350 font-mono text-[0.68rem] leading-relaxed text-ink-soft/70">
+      <p className="mx-auto mt-10 max-w-350 font-mono text-[0.75rem] leading-relaxed text-fg-muted/70">
         Redesign concept. Content adapted from complexdatainsights.com with
         attribution; guide text is published there under CC BY 4.0 and code under
         MIT. Dashed borders mark placeholders and unverified claims.

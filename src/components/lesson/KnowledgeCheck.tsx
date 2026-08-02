@@ -66,46 +66,50 @@ export function KnowledgeCheck({
   return (
     <div
       ref={groupRef}
-      className="max-w-[62ch] rounded-2xl border border-paper-line bg-paper-raised p-6 sm:p-7"
+      className="max-w-[62ch] rounded-2xl border border-line bg-bg-raised p-6 sm:p-7"
     >
       <fieldset className="border-0 p-0">
         <legend className="rule-label mb-3 text-signal">Knowledge check</legend>
-        <p className="mb-2 text-[1.05rem] leading-snug font-semibold text-ink">
+        <p className="mb-2 text-[1.05rem] leading-snug font-semibold text-fg">
           {question}
         </p>
         {hint && (
-          <p className="mb-5 text-[0.9rem] leading-relaxed text-paper-soft">
+          <p className="mb-5 text-[0.9rem] leading-relaxed text-fg-muted">
             {hint}
           </p>
         )}
 
-        <div className="mt-5 space-y-2.5">
+        <div role="radiogroup" className="mt-5 space-y-2.5">
           {options.map((option) => {
             const active = chosen === option.id;
             const state = active
               ? option.correct
                 ? "border-pass bg-pass/10"
                 : "border-change bg-change/6"
-              : "border-paper-line hover:border-signal";
+              : "border-line hover:border-signal";
             return (
               <button
                 key={option.id}
                 type="button"
+                role="radio"
+                aria-checked={active}
+                // Once correct, the group is settled; keep it focusable and
+                // readable rather than removing it from the tab order.
+                aria-disabled={answered && isCorrect ? true : undefined}
                 onClick={() => choose(option)}
-                aria-pressed={active}
-                className={`flex w-full items-start gap-3 rounded-xl border px-5 py-3.5 text-left text-[0.95rem] transition-colors ${state} ${
-                  active ? "text-ink" : "text-ink"
+                className={`flex w-full items-start gap-3 rounded-xl border px-5 py-3.5 text-left text-[0.95rem] [overflow-wrap:anywhere] transition-colors ${state} ${
+                  active ? "text-fg" : "text-fg"
                 }`}
               >
                 {/* Shape as well as colour, so the state does not depend on hue. */}
                 <span
                   aria-hidden
-                  className={`mt-0.5 flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full border font-mono text-[0.6rem] ${
+                  className={`mt-0.5 flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full border font-mono text-[0.75rem] ${
                     active
                       ? option.correct
-                        ? "border-pass bg-pass text-ink"
-                        : "border-change bg-change text-paper"
-                      : "border-paper-line"
+                        ? "border-marker-pass bg-marker-pass text-on-accent"
+                        : "border-marker-change bg-marker-change text-white"
+                      : "border-line"
                   }`}
                 >
                   {active ? (option.correct ? "✓" : "✕") : ""}
@@ -127,17 +131,17 @@ export function KnowledgeCheck({
             }`}
           >
             <p
-              className={`mb-2 font-mono text-[0.7rem] tracking-wide ${
+              className={`mb-2 font-mono text-[0.75rem] tracking-wide ${
                 selected.correct ? "text-signal" : "text-change"
               }`}
             >
               {selected.correct ? "Correct — recorded in your trail" : "Not quite"}
             </p>
-            <p className="text-[0.95rem] leading-relaxed text-paper-soft">
+            <p className="text-[0.95rem] leading-relaxed text-fg-muted">
               {selected.feedback}
             </p>
             {!selected.correct && (
-              <p className="mt-3 font-mono text-[0.72rem] text-paper-soft/80">
+              <p className="mt-3 font-mono text-[0.75rem] text-fg-muted/80">
                 Try again — nothing is scored.
               </p>
             )}

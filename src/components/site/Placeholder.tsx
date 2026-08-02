@@ -29,7 +29,7 @@ export function Placeholder({
       className={`relative rounded-2xl border border-dashed ${tone} ${className}`}
       data-placeholder={kind}
     >
-      <span className="rule-label absolute -top-2.5 left-4 bg-ink px-2">
+      <span className="rule-label absolute -top-2.5 left-4 bg-bg px-2">
         Placeholder · {label}
       </span>
       {children}
@@ -42,7 +42,7 @@ export function UnverifiedNote({ children }: { children: ReactNode }) {
   return (
     <span className="border-b border-dotted border-change/60 text-current">
       {children}
-      <sup className="ml-0.5 font-mono text-[0.6rem] text-change">[verify]</sup>
+      <sup className="ml-0.5 font-mono text-[0.75rem] text-change">[verify]</sup>
     </span>
   );
 }

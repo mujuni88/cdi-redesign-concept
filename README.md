@@ -63,10 +63,37 @@ src/
 The lesson components are the reusable system: a second lesson is a section list plus a
 composition, not bespoke React.
 
+## Theming
+
+**Light is the default.** A toggle in the header persists the choice to `localStorage`, and an
+inline script applies it before first paint so a dark-theme visitor never sees a light flash.
+`?theme=dark` / `?theme=light` overrides both, so a link can carry its own appearance. System
+preference is deliberately not consulted — light is the stated default — but the choice sticks
+once set.
+
+Every surface and text colour is a semantic token (`bg`, `bg-alt`, `bg-raised`, `fg`,
+`fg-muted`, `line`, `focus`), so `[data-theme="dark"]` flips the whole site by overriding custom
+properties. No component carries a conditional theme class.
+
+Three groups of colour deliberately do **not** flip:
+
+- **Filled controls** (`accent`/`on-accent`, `btn`/`on-btn`) — a primary action should not change
+  identity because the page ground did, and pinning both halves means a label can never end up on
+  the wrong side of its own button.
+- **Chart marks** (`chart-*`) — the viridis ramp encodes data state and is chosen for perceptual
+  uniformity and colour-vision safety.
+- **Sunken panels** (`surface-sunken`) — the decision trail, code blocks and the generated report
+  are terminal output, so they stay dark in both themes and carry their own `onsunken-*` palette.
+
+Text-safe accents are separate from chart fills: `--color-inspect` is `#2c5d80` on light and
+`#6aa4cf` on dark, while `--color-chart-inspect` stays `#31688e` for SVG marks. Previously one
+value did both jobs and the on-dark labels sat at 3.25:1.
+
 ## Design notes
 
-- **Dark surfaces are where you browse; light surfaces are where you work.** The catalogue keeps
-  its cinematic quality, long-form reading gets a high-legibility ground.
+- **Browse is one step deeper than work.** In light that reads as tinted vellum against white;
+  in dark, as petrol-black against raised slate. It also gives the generated artwork two honest
+  registers — on light a poster reads like a published figure, on dark like output on a screen.
 - **Colour carries meaning.** The accent ramp is viridis — the colour-vision-safe scale
   matplotlib and seaborn use by default, and that CDI's own `cdi_viz` theme already teaches —
   with each stop bound to a data state. `#036281` and `#f7c546` are CDI's existing brand tokens.

@@ -43,7 +43,7 @@ function TrailEntries({ dense = false }: { dense?: boolean }) {
 
   if (entries.length === 0) {
     return (
-      <p className="px-1 py-3 font-mono text-[0.7rem] leading-relaxed text-ink-soft">
+      <p className="px-1 py-3 font-mono text-[0.75rem] leading-relaxed text-onsunken-muted">
         Empty. Every decision you make will be written here.
       </p>
     );
@@ -53,17 +53,17 @@ function TrailEntries({ dense = false }: { dense?: boolean }) {
     <ol ref={listRef} className="space-y-2">
       {entries.map((entry, i) => (
         <li key={entry.id} className="rounded px-1 py-1">
-          <div className="flex gap-2.5 font-mono text-[0.68rem] leading-relaxed">
-            <span className="shrink-0 text-ink-soft/60">
+          <div className="flex gap-2.5 font-mono text-[0.75rem] leading-relaxed">
+            <span className="shrink-0 text-onsunken-muted/70">
               {String(i + 1).padStart(2, "0")}
             </span>
             <div className="min-w-0">
               <span className={`${KIND_COLOR[entry.kind]} block`}>
                 {entry.label}
               </span>
-              <span className="mt-0.5 block text-paper/70">{entry.text}</span>
+              <span className="mt-0.5 block text-fg-onsunken/80">{entry.text}</span>
               {entry.value && !dense && (
-                <span className="mt-1 block text-ink-soft">{entry.value}</span>
+                <span className="mt-1 block text-onsunken-muted">{entry.value}</span>
               )}
             </div>
           </div>
@@ -78,10 +78,10 @@ export function DecisionTrailRail() {
   const { entries } = useTrail();
 
   return (
-    <div className="rounded-2xl border border-ink-line bg-ink p-5">
+    <div className="surface-sunken rounded-2xl border border-line/40 p-5">
       <div className="mb-4 flex items-baseline justify-between">
-        <p className="rule-label text-paper">Decision trail</p>
-        <span className="font-mono text-[0.7rem] text-ink-soft">
+        <p className="rule-label text-fg-onsunken">Decision trail</p>
+        <span className="font-mono text-[0.75rem] text-onsunken-muted">
           {entries.length}
         </span>
       </div>
@@ -92,7 +92,7 @@ export function DecisionTrailRail() {
       >
         <TrailEntries />
       </div>
-      <p className="mt-4 border-t border-ink-line pt-3 font-mono text-[0.65rem] leading-relaxed text-ink-soft">
+      <p className="mt-4 border-t border-line/40 pt-3 font-mono text-[0.75rem] leading-relaxed text-fg-onsunken/70">
         Becomes cleaning-report.txt when you finish.
       </p>
     </div>
@@ -108,7 +108,7 @@ export function DecisionTrailSheet() {
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 lg:hidden">
       {open && (
-        <div className="max-h-[55vh] overflow-y-auto border-t border-ink-line bg-ink px-5 py-4">
+        <div className="surface-sunken max-h-[55vh] overflow-y-auto border-t border-line/40 px-5 py-4">
           <TrailEntries dense />
         </div>
       )}
@@ -116,15 +116,15 @@ export function DecisionTrailSheet() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="flex w-full items-center gap-3 border-t border-ink-line bg-ink px-5 py-3 text-left"
+        className="surface-sunken flex w-full items-center gap-3 border-t border-line/40 px-5 py-3 text-left"
       >
-        <span className="rule-label shrink-0 rounded-sm bg-flag px-1.5 py-1 text-ink">
+        <span className="rule-label shrink-0 rounded-sm bg-accent px-1.5 py-1 text-on-accent">
           {entries.length}
         </span>
-        <span className="min-w-0 flex-1 truncate font-mono text-[0.7rem] text-paper/70">
+        <span className="min-w-0 flex-1 truncate font-mono text-[0.75rem] text-fg-onsunken/75">
           {latest ? latest.text : "Decision trail — empty"}
         </span>
-        <span aria-hidden className="shrink-0 font-mono text-xs text-ink-soft">
+        <span aria-hidden className="shrink-0 font-mono text-xs text-onsunken-muted">
           {open ? "▾" : "▴"}
         </span>
       </button>
@@ -150,20 +150,20 @@ export function ArtifactReport() {
   };
 
   return (
-    <div className="max-w-[70ch] overflow-hidden rounded-2xl border border-ink-line bg-ink">
-      <div className="flex items-center justify-between border-b border-ink-line px-4 py-2.5">
-        <code className="text-[0.7rem] text-ink-soft">
+    <div className="surface-sunken max-w-[70ch] overflow-hidden rounded-2xl border border-line/40">
+      <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
+        <code className="text-[0.75rem] text-onsunken-muted">
           results/cleaning/cleaning-report.txt
         </code>
         <button
           type="button"
           onClick={download}
-          className="rounded-md bg-flag px-2.5 py-1 font-mono text-[0.7rem] text-ink"
+          className="rounded-md bg-accent px-3 py-2 font-mono text-[0.75rem] font-medium text-on-accent"
         >
           {downloaded ? "Downloaded" : "Download"}
         </button>
       </div>
-      <pre className="max-h-100 overflow-auto px-4 py-4 text-[0.72rem] leading-relaxed text-paper/85">
+      <pre className="max-h-120 overflow-auto px-4 py-4 text-[0.75rem] leading-relaxed break-words whitespace-pre-wrap text-fg-onsunken/90">
         <code>{report}</code>
       </pre>
     </div>

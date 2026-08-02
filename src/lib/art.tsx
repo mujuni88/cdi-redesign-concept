@@ -53,6 +53,16 @@ function normal(rand: () => number) {
   return q(Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v));
 }
 
+/* Chart chrome reads from the theme so a poster sits correctly on either
+   ground: on light it reads like a published figure, on dark like screen
+   output. The data marks below stay fixed — they encode state. */
+const PLOT_FROM = "var(--color-plot-from)";
+const PLOT_TO = "var(--color-plot-to)";
+const PLOT_GRID = "var(--color-plot-grid)";
+const PLOT_NOISE = "var(--color-plot-noise)";
+const PLOT_PANEL = "var(--color-plot-panel)";
+const PLOT_LABEL = "var(--color-plot-label)";
+
 const W = 320;
 const H = 200;
 
@@ -106,7 +116,7 @@ function Volcano({ seed = 7 }: ArtProps) {
   const y = (p: number) => H - 14 - p * 13;
 
   return (
-    <Frame gradientId={id} from="#0b1f28" to="#06131a">
+    <Frame gradientId={id} from={PLOT_FROM} to={PLOT_TO}>
       <line
         x1={0}
         x2={W}
@@ -126,7 +136,7 @@ function Volcano({ seed = 7 }: ArtProps) {
             cx={x(pt.fc)}
             cy={y(pt.p)}
             r={sig ? 2.4 : 1.5}
-            fill={sig ? (up ? "#f7c546" : "#21918c") : "#3d5a66"}
+            fill={sig ? (up ? "#f7c546" : "#21918c") : PLOT_NOISE}
             opacity={sig ? 0.95 : 0.5}
           />
         );
@@ -145,9 +155,9 @@ function Pcoa({ seed = 3 }: ArtProps) {
     { cx: 215, cy: 118, color: "#f7c546" },
   ];
   return (
-    <Frame gradientId={id} from="#08202a" to="#06131a">
-      <line x1={0} x2={W} y1={H / 2} y2={H / 2} stroke="#1d3641" strokeWidth={0.6} />
-      <line x1={W / 2} x2={W / 2} y1={0} y2={H} stroke="#1d3641" strokeWidth={0.6} />
+    <Frame gradientId={id} from={PLOT_FROM} to={PLOT_TO}>
+      <line x1={0} x2={W} y1={H / 2} y2={H / 2} stroke={PLOT_GRID} strokeWidth={0.6} />
+      <line x1={W / 2} x2={W / 2} y1={0} y2={H} stroke={PLOT_GRID} strokeWidth={0.6} />
       {groups.map((g, gi) => (
         <g key={gi}>
           <ellipse
@@ -190,7 +200,7 @@ function Umap({ seed = 11 }: ArtProps) {
     { cx: 108, cy: 158, n: 28, c: VIRIDIS[5] },
   ];
   return (
-    <Frame gradientId={id} from="#0a1a24" to="#06131a">
+    <Frame gradientId={id} from={PLOT_FROM} to={PLOT_TO}>
       {clusters.map((cl, ci) => (
         <g key={ci}>
           {Array.from({ length: cl.n }, (_, i) => (
@@ -237,7 +247,7 @@ function Manhattan({ seed = 5 }: ArtProps) {
   }
 
   return (
-    <Frame gradientId={id} from="#09202b" to="#06131a">
+    <Frame gradientId={id} from={PLOT_FROM} to={PLOT_TO}>
       <line
         x1={0}
         x2={W}
@@ -265,7 +275,7 @@ function Heatmap({ seed = 13 }: ArtProps) {
   const cw = W / cols;
   const ch = (H - 20) / rows;
   return (
-    <Frame gradientId={id} from="#0a1b24" to="#06131a">
+    <Frame gradientId={id} from={PLOT_FROM} to={PLOT_TO}>
       {Array.from({ length: rows }, (_, r) =>
         Array.from({ length: cols }, (_, c) => {
           // Row-blocked structure so it reads as clustered, not as noise.
@@ -306,14 +316,14 @@ function Roc({ seed = 17 }: ArtProps) {
   const area = `${d} L${x0 + size},${y0 + size} L${x0},${y0 + size} Z`;
 
   return (
-    <Frame gradientId={id} from="#0a1c26" to="#06131a">
-      <rect x={x0} y={y0} width={size} height={size} fill="none" stroke="#1d3641" strokeWidth={0.8} />
+    <Frame gradientId={id} from={PLOT_FROM} to={PLOT_TO}>
+      <rect x={x0} y={y0} width={size} height={size} fill="none" stroke={PLOT_GRID} strokeWidth={0.8} />
       <line
         x1={x0}
         y1={y0 + size}
         x2={x0 + size}
         y2={y0}
-        stroke="#3d5a66"
+        stroke={PLOT_NOISE}
         strokeWidth={0.8}
         strokeDasharray="3 3"
       />
@@ -334,9 +344,9 @@ function Regression({ seed = 23 }: ArtProps) {
     return { x: 28 + x * (W - 56), y: H - 26 - y * (H - 60) };
   });
   return (
-    <Frame gradientId={id} from="#0a1e27" to="#06131a">
-      <line x1={28} y1={H - 26} x2={W - 28} y2={H - 26} stroke="#1d3641" strokeWidth={0.8} />
-      <line x1={28} y1={22} x2={28} y2={H - 26} stroke="#1d3641" strokeWidth={0.8} />
+    <Frame gradientId={id} from={PLOT_FROM} to={PLOT_TO}>
+      <line x1={28} y1={H - 26} x2={W - 28} y2={H - 26} stroke={PLOT_GRID} strokeWidth={0.8} />
+      <line x1={28} y1={22} x2={28} y2={H - 26} stroke={PLOT_GRID} strokeWidth={0.8} />
       <line
         x1={28}
         y1={H - 26 - 0.24 * (H - 60)}
@@ -364,7 +374,7 @@ function SmallMultiples({ seed = 29 }: ArtProps) {
   const pw = (W - 24) / cols;
   const ph = (H - 24) / rows;
   return (
-    <Frame gradientId={id} from="#0a1d26" to="#06131a">
+    <Frame gradientId={id} from={PLOT_FROM} to={PLOT_TO}>
       {Array.from({ length: rows * cols }, (_, k) => {
         const cx = 12 + (k % cols) * pw;
         const cy = 12 + Math.floor(k / cols) * ph;
@@ -377,8 +387,8 @@ function SmallMultiples({ seed = 29 }: ArtProps) {
               y={cy}
               width={pw - 8}
               height={ph - 8}
-              fill="#0d2028"
-              stroke="#1d3641"
+              fill={PLOT_PANEL}
+              stroke={PLOT_GRID}
               strokeWidth={0.7}
               rx={3}
             />
@@ -410,18 +420,18 @@ function Joins({ seed = 31 }: ArtProps) {
   const id = `j${seed}`;
   const table = (x: number, y: number, label: string) => (
     <g>
-      <rect x={x} y={y} width={78} height={58} rx={4} fill="#0d2028" stroke="#21918c" strokeWidth={1} />
+      <rect x={x} y={y} width={78} height={58} rx={4} fill={PLOT_PANEL} stroke="#21918c" strokeWidth={1} />
       <rect x={x} y={y} width={78} height={13} rx={4} fill="#21918c" opacity={0.28} />
-      <text x={x + 6} y={y + 9.5} fill="#8aa4ad" fontSize={7} fontFamily="monospace">
+      <text x={x + 6} y={y + 9.5} fill={PLOT_LABEL} fontSize={7} fontFamily="monospace">
         {label}
       </text>
       {[0, 1, 2].map((r) => (
-        <rect key={r} x={x + 6} y={y + 20 + r * 11} width={66} height={5} rx={1} fill="#1d3641" />
+        <rect key={r} x={x + 6} y={y + 20 + r * 11} width={66} height={5} rx={1} fill={PLOT_GRID} />
       ))}
     </g>
   );
   return (
-    <Frame gradientId={id} from="#0a1e28" to="#06131a">
+    <Frame gradientId={id} from={PLOT_FROM} to={PLOT_TO}>
       {table(24, 40, "patients")}
       {table(216, 100, "encounters")}
       <path
@@ -444,13 +454,13 @@ function Timeline({ seed = 37 }: ArtProps) {
   const id = `t${seed}`;
   const lanes = 4;
   return (
-    <Frame gradientId={id} from="#0a1c26" to="#06131a">
+    <Frame gradientId={id} from={PLOT_FROM} to={PLOT_TO}>
       {Array.from({ length: lanes }, (_, l) => {
         const y = 42 + l * 34;
         const n = 3 + Math.floor(rand() * 3);
         return (
           <g key={l}>
-            <line x1={24} x2={W - 24} y1={y} y2={y} stroke="#1d3641" strokeWidth={1} />
+            <line x1={24} x2={W - 24} y1={y} y2={y} stroke={PLOT_GRID} strokeWidth={1} />
             {Array.from({ length: n }, (_, i) => {
               const cx = 40 + rand() * (W - 80);
               return (
@@ -480,7 +490,7 @@ function Funnel({ seed = 41 }: ArtProps) {
     { w: 84, label: "18 included" },
   ];
   return (
-    <Frame gradientId={id} from="#0a1d27" to="#06131a">
+    <Frame gradientId={id} from={PLOT_FROM} to={PLOT_TO}>
       {steps.map((s, i) => (
         <g key={i}>
           <rect
@@ -527,7 +537,7 @@ function Pipeline({ seed = 43 }: ArtProps) {
     [3, 4],
   ];
   return (
-    <Frame gradientId={id} from="#0a1e28" to="#06131a">
+    <Frame gradientId={id} from={PLOT_FROM} to={PLOT_TO}>
       {edges.map(([a, b], i) => (
         <line
           key={i}
@@ -542,7 +552,7 @@ function Pipeline({ seed = 43 }: ArtProps) {
       ))}
       {nodes.map((n, i) => (
         <g key={i}>
-          <circle cx={n.x} cy={n.y} r={13} fill="#0d2028" stroke={VIRIDIS[i + 1]} strokeWidth={1.8} />
+          <circle cx={n.x} cy={n.y} r={13} fill={PLOT_PANEL} stroke={VIRIDIS[i + 1]} strokeWidth={1.8} />
           <circle cx={n.x} cy={n.y} r={4.5} fill={VIRIDIS[i + 1]} />
         </g>
       ))}
@@ -554,44 +564,74 @@ function Pipeline({ seed = 43 }: ArtProps) {
 
 function Cleaning({ seed = 3 }: ArtProps) {
   const id = `c${seed}`;
-  const rows = 8;
-  const dupes = [2, 5];
+  // A per-column completeness bar over a small missingness matrix — both are
+  // outputs DS-L03 actually produces. The previous drawing was rounded bars of
+  // rounded pills, which is the vocabulary of a loading skeleton, on the one
+  // card that promises "the chart that guide teaches you to make".
+  const cols = 5;
+  const rowsN = 14;
+  const cw = 44;
+  const x0 = 40;
+  const completeness = [1, 1, 0.93, 1, 0.86];
+  // Rows 3 and 9 are the identical pair: every cell value matches exactly.
+  const dupes = [3, 9];
+
   return (
-    <Frame gradientId={id} from="#0d2430" to="#06131a">
-      {Array.from({ length: rows }, (_, r) => {
-        const y = 24 + r * 20;
-        const isDupe = dupes.includes(r);
-        return (
-          <g key={r}>
+    <Frame gradientId={id} from={PLOT_FROM} to={PLOT_TO}>
+      {/* completeness per column */}
+      {completeness.map((v, c) => (
+        <g key={`b${c}`}>
+          <rect
+            x={x0 + c * cw}
+            y={16}
+            width={cw - 8}
+            height={22}
+            fill={PLOT_GRID}
+            opacity={0.5}
+          />
+          <rect
+            x={x0 + c * cw}
+            y={16 + 22 * (1 - v)}
+            width={cw - 8}
+            height={22 * v}
+            fill={v === 1 ? "#21918c" : "#f7c546"}
+            opacity={0.9}
+          />
+        </g>
+      ))}
+      <line x1={20} x2={W - 12} y1={45} y2={45} stroke={PLOT_GRID} strokeWidth={0.8} />
+
+      {/* the matrix: present cells filled, the two identical rows highlighted */}
+      {Array.from({ length: rowsN }, (_, r) =>
+        Array.from({ length: cols }, (_, c) => {
+          const missing = (c === 2 && r === 5) || (c === 4 && r === 11);
+          const dupe = dupes.includes(r);
+          return (
             <rect
-              x={22}
-              y={y}
-              width={W - 44}
-              height={15}
-              rx={2}
-              fill={isDupe ? "#f7c546" : "#12303c"}
-              opacity={isDupe ? 0.22 : 1}
+              key={`${r}-${c}`}
+              x={x0 + c * cw}
+              y={54 + r * 10}
+              width={cw - 8}
+              height={7}
+              rx={1}
+              fill={missing ? "#d64550" : dupe ? "#f7c546" : "#21918c"}
+              opacity={missing ? 0.85 : dupe ? 0.9 : 0.34}
             />
-            {[0, 1, 2, 3, 4].map((c) => (
-              <rect
-                key={c}
-                x={30 + c * 54}
-                y={y + 5}
-                width={c === 4 ? 40 : 30}
-                height={5}
-                rx={1}
-                fill={isDupe ? "#f7c546" : "#2b4a58"}
-                opacity={isDupe ? 0.95 : 1}
-              />
-            ))}
-            {isDupe && (
-              <text x={W - 34} y={y + 11} fill="#f7c546" fontSize={9} fontFamily="monospace">
-                ▲
-              </text>
-            )}
-          </g>
-        );
-      })}
+          );
+        }),
+      )}
+      {dupes.map((r) => (
+        <text
+          key={`m${r}`}
+          x={22}
+          y={61 + r * 10}
+          fill="#f7c546"
+          fontSize={7.5}
+          fontFamily="monospace"
+        >
+          ={String(r).padStart(2, "0")}
+        </text>
+      ))}
     </Frame>
   );
 }
@@ -626,7 +666,7 @@ export const ART_CAPTION: Record<ArtVariant, string> = {
   timeline: "patient timeline · index event",
   funnel: "study screening funnel",
   pipeline: "acquisition workflow",
-  cleaning: "identical rows, flagged",
+  cleaning: "completeness · identical rows flagged",
 };
 
 export function CourseArt({

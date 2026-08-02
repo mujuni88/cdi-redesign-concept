@@ -21,18 +21,18 @@ export function IdenticalRowsDemo() {
   return (
     <section
       aria-labelledby="demo-heading"
-      className="surface-paper border-b border-paper-line px-5 py-20 sm:px-8 lg:py-28"
+      className="surface-alt border-b border-line px-5 py-20 sm:px-8 lg:py-28"
     >
       <div className="mx-auto grid max-w-350 gap-12 lg:grid-cols-[0.85fr_1fr] lg:gap-20">
         <div>
           <p className="rule-label mb-5 text-signal">15-second demo</p>
           <h2
             id="demo-heading"
-            className="text-display max-w-[16ch] text-balance text-ink"
+            className="text-display max-w-[16ch] text-balance text-fg"
           >
             Your turn. Make the call.
           </h2>
-          <p className="mt-6 max-w-[44ch] text-[1.0625rem] leading-relaxed text-paper-soft">
+          <p className="mt-6 max-w-[44ch] text-[1.0625rem] leading-relaxed text-fg-muted">
             These {group.length} rows appear in the Iris dataset — the most-used
             teaching dataset in data science. Every value matches. Most tutorials
             reach for{" "}
@@ -41,7 +41,7 @@ export function IdenticalRowsDemo() {
             </code>{" "}
             here.
           </p>
-          <p className="mt-4 max-w-[44ch] text-[1.0625rem] leading-relaxed text-paper-soft">
+          <p className="mt-4 max-w-[44ch] text-[1.0625rem] leading-relaxed text-fg-muted">
             Make the call, then see what the reasoning actually requires.
           </p>
         </div>
@@ -49,14 +49,14 @@ export function IdenticalRowsDemo() {
         {/* min-w-0: grid items default to min-width:auto, which would let the
             table's minimum width push the page wider instead of scrolling
             inside its own container. */}
-        <div className="min-w-0 rounded-3xl border border-paper-line bg-paper-raised p-6 shadow-[0_14px_34px_rgba(2,24,33,0.07)] sm:p-8">
+        <div className="min-w-0 rounded-3xl border border-line bg-bg-raised p-6 shadow-[0_14px_34px_rgba(2,24,33,0.07)] sm:p-8">
           <div className="overflow-x-auto">
             <table className="w-full min-w-100 border-collapse font-mono text-sm">
               <caption className="sr-only">
                 Three identical rows from the Iris dataset
               </caption>
               <thead>
-                <tr className="text-paper-soft">
+                <tr className="text-fg-muted">
                   <th scope="col" className="pb-2 text-left font-normal">row</th>
                   <th scope="col" className="pb-2 text-left font-normal">sepal_l</th>
                   <th scope="col" className="pb-2 text-left font-normal">sepal_w</th>
@@ -67,8 +67,8 @@ export function IdenticalRowsDemo() {
               </thead>
               <tbody>
                 {group.map((row) => (
-                  <tr key={row.index} className="border-t border-paper-line text-ink">
-                    <td className="py-2.5 text-paper-soft">{row.index}</td>
+                  <tr key={row.index} className="border-t border-line text-fg">
+                    <td className="py-2.5 text-fg-muted">{row.index}</td>
                     <td className="py-2.5">{row.sepal_length.toFixed(1)}</td>
                     <td className="py-2.5">{row.sepal_width.toFixed(1)}</td>
                     <td className="py-2.5">{row.petal_length.toFixed(1)}</td>
@@ -81,7 +81,7 @@ export function IdenticalRowsDemo() {
           </div>
 
           <fieldset className="mt-7 border-0 p-0">
-            <legend className="rule-label mb-3 text-paper-soft">
+            <legend className="rule-label mb-3 text-fg-muted">
               What do you do?
             </legend>
             <div className="flex flex-col gap-2.5 sm:flex-row">
@@ -92,7 +92,7 @@ export function IdenticalRowsDemo() {
                 className={`flex-1 rounded-xl border px-5 py-3.5 text-left font-mono text-sm transition-colors ${
                   choice === "drop"
                     ? "border-change bg-change/8 text-change"
-                    : "border-paper-line text-ink hover:border-signal"
+                    : "border-line text-fg hover:border-signal"
                 }`}
               >
                 Drop the extra rows
@@ -104,7 +104,7 @@ export function IdenticalRowsDemo() {
                 className={`flex-1 rounded-xl border px-5 py-3.5 text-left font-mono text-sm transition-colors ${
                   choice === "retain"
                     ? "border-pass bg-pass/10 text-signal"
-                    : "border-paper-line text-ink hover:border-signal"
+                    : "border-line text-fg hover:border-signal"
                 }`}
               >
                 Keep them, record why
@@ -118,7 +118,7 @@ export function IdenticalRowsDemo() {
                 <p className="mb-2 font-mono text-xs tracking-wide text-change">
                   You just deleted two real measurements.
                 </p>
-                <p className="text-[0.95rem] leading-relaxed text-paper-soft">
+                <p className="text-[0.95rem] leading-relaxed text-fg-muted">
                   Two flowers can legitimately have the same four measurements and
                   the same species label. Without a unique identifier there is
                   nothing in this table that distinguishes a data-entry error from
@@ -132,7 +132,7 @@ export function IdenticalRowsDemo() {
                 <p className="mb-2 font-mono text-xs tracking-wide text-signal">
                   Right — and the record is what makes it defensible.
                 </p>
-                <p className="text-[0.95rem] leading-relaxed text-paper-soft">
+                <p className="text-[0.95rem] leading-relaxed text-fg-muted">
                   To confirm a duplicate you need evidence the table does not
                   contain: a unique observation identifier, a repeated source row,
                   a collection timestamp, or knowledge of how the data was
@@ -141,14 +141,14 @@ export function IdenticalRowsDemo() {
                 </p>
                 <Link
                   href="/lessons/data-cleaning"
-                  className="mt-4 inline-block font-mono text-xs text-signal underline underline-offset-4 hover:text-ink"
+                  className="mt-4 inline-block font-mono text-xs text-signal underline underline-offset-4 hover:text-fg"
                 >
                   Do this properly in the full lesson →
                 </Link>
               </div>
             )}
             {!choice && (
-              <p className="pt-2 text-sm text-paper-soft/80">
+              <p className="pt-2 text-sm text-fg-muted/80">
                 Pick one. Both answers get a real explanation.
               </p>
             )}
